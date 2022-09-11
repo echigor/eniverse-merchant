@@ -29,6 +29,14 @@ namespace EniverseGenerator
                 database.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
                 database.ChangeTracker.AutoDetectChangesEnabled = false;
 
+                GenerateProducts(database);
+            }
+
+            using (DatabaseContext database = new DatabaseContext())
+            {
+                database.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+                database.ChangeTracker.AutoDetectChangesEnabled = false;
+
                 GeneratePlanets(database);
             }
 
@@ -38,14 +46,6 @@ namespace EniverseGenerator
                 database.ChangeTracker.AutoDetectChangesEnabled = false;
 
                 GenerateStations(database);
-            }
-
-            using (DatabaseContext database = new DatabaseContext())
-            {
-                database.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-                database.ChangeTracker.AutoDetectChangesEnabled = false;
-
-                GenerateProducts(database);
             }
 
             using (DatabaseContext database = new DatabaseContext())
@@ -134,9 +134,9 @@ namespace EniverseGenerator
             {
                 Product product = productGenerator.GenerateNext();
                 database.Products.Add(product);
+                database.SaveChanges(); //It is important to keep the order in which products are added
             }
 
-            database.SaveChanges();
 
             Console.WriteLine($"Products successfully added to database: {DateTime.Now.TimeOfDay}\n");
         }

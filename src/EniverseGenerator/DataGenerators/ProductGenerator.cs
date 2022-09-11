@@ -37,7 +37,6 @@ namespace EniverseGenerator.DataGenerators
         {
             Product result = new Product();
             result.Name = _productNames[_productCount];
-
             _productCount++;
 
             return result;
