@@ -13,14 +13,46 @@ namespace EniverseGenerator
     {
         static void Main(string[] args)
         {
-            using(DatabaseContext database = new DatabaseContext())
+            using (DatabaseContext database = new DatabaseContext())
             {
+                database.Database.EnsureDeleted();
+                database.Database.EnsureCreated();
+
                 database.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+                database.ChangeTracker.AutoDetectChangesEnabled = false;
 
                 GenerateSystems(database);
+            }
+
+            using (DatabaseContext database = new DatabaseContext())
+            {
+                database.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+                database.ChangeTracker.AutoDetectChangesEnabled = false;
+
                 GeneratePlanets(database);
+            }
+
+            using (DatabaseContext database = new DatabaseContext())
+            {
+                database.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+                database.ChangeTracker.AutoDetectChangesEnabled = false;
+
                 GenerateStations(database);
+            }
+
+            using (DatabaseContext database = new DatabaseContext())
+            {
+                database.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+                database.ChangeTracker.AutoDetectChangesEnabled = false;
+
                 GenerateProducts(database);
+            }
+
+            using (DatabaseContext database = new DatabaseContext())
+            {
+                database.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+                database.ChangeTracker.AutoDetectChangesEnabled = false;
+
                 GenerateStationProducts(database);
             }
 
@@ -43,9 +75,11 @@ namespace EniverseGenerator
                 {
                     database.SaveChanges();
                 }
+
+                WriteProgressBar(i, StarSystemGenerator.TotalStars);
             }
 
-            Console.WriteLine("Star systems successfully added to database\n");
+            Console.WriteLine($"Star systems successfully added to database: {DateTime.Now.TimeOfDay}\n");
         }
 
         static void GeneratePlanets(DatabaseContext database)
@@ -63,9 +97,11 @@ namespace EniverseGenerator
                 {
                     database.SaveChanges();
                 }
+
+                WriteProgressBar(i, PlanetGenerator.TotalPlanets);
             }
 
-            Console.WriteLine("Planets successfully added to database\n");
+            Console.WriteLine($"Planets successfully added to database: {DateTime.Now.TimeOfDay}\n");
         }
 
         static void GenerateStations(DatabaseContext database)
@@ -73,7 +109,7 @@ namespace EniverseGenerator
             StationGenerator stationGenerator = new StationGenerator();
             Console.WriteLine("Station generation started");
 
-            for (int i = 0; i < StationGenerator.TotalStations; i++)
+            for (int i = 1; i <= StationGenerator.TotalStations; i++)
             {
                 Station station = stationGenerator.GenerateNext();
                 database.Stations.Add(station);
@@ -82,9 +118,11 @@ namespace EniverseGenerator
                 {
                     database.SaveChanges();
                 }
+
+                WriteProgressBar(i, StationGenerator.TotalStations);
             }
 
-            Console.WriteLine("Stations successfully added to database\n");
+            Console.WriteLine($"Stations successfully added to database: {DateTime.Now.TimeOfDay}\n");
         }
 
         static void GenerateProducts(DatabaseContext database)
@@ -92,7 +130,7 @@ namespace EniverseGenerator
             ProductGenerator productGenerator = new ProductGenerator();
             Console.WriteLine("Product generation started");
 
-            for (int i = 0; i < ProductGenerator.TotalProducts; i++)
+            for (int i = 1; i <= ProductGenerator.TotalProducts; i++)
             {
                 Product product = productGenerator.GenerateNext();
                 database.Products.Add(product);
@@ -100,7 +138,7 @@ namespace EniverseGenerator
 
             database.SaveChanges();
 
-            Console.WriteLine("Products successfully added to database\n");
+            Console.WriteLine($"Products successfully added to database: {DateTime.Now.TimeOfDay}\n");
         }
 
         static void GenerateStationProducts(DatabaseContext database)
@@ -121,9 +159,27 @@ namespace EniverseGenerator
                 {
                     database.SaveChanges();
                 }
+
+                WriteProgressBar(i, StationGenerator.TotalStations);
             }
 
-            Console.WriteLine("Station products successfully added to database\n");
+            Console.WriteLine($"Station products successfully added to database: {DateTime.Now.TimeOfDay}\n");
+        }
+
+        static void WriteProgressBar(int index, int totalCount)
+        {
+            if (index == 1)
+            {
+                Console.Write("[");
+            }
+            else if (index % (totalCount / 20) == 0)
+            {
+                Console.Write("=");
+            }
+            else if (index == totalCount)
+            {
+                Console.Write("]\n");
+            }
         }
     }
 }

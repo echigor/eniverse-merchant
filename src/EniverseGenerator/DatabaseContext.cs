@@ -20,7 +20,6 @@ namespace EniverseGenerator
 
         public DatabaseContext()
         {
-            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
