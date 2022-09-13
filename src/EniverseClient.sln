@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32630.194
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EniverseClient", "EniverseClient\EniverseClient.csproj", "{2C0E4E8C-83CE-44AA-9C4E-2FC4F00A7D7E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2C0E4E8C-83CE-44AA-9C4E-2FC4F00A7D7E}.Debug|x64.ActiveCfg = Debug|x64
+		{2C0E4E8C-83CE-44AA-9C4E-2FC4F00A7D7E}.Debug|x64.Build.0 = Debug|x64
+		{2C0E4E8C-83CE-44AA-9C4E-2FC4F00A7D7E}.Release|x64.ActiveCfg = Release|x64
+		{2C0E4E8C-83CE-44AA-9C4E-2FC4F00A7D7E}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D8A58E1A-23C6-4C31-84AC-8AFC73E5FD3A}
+	EndGlobalSection
+EndGlobal

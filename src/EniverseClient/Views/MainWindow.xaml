@@ -1,0 +1,67 @@
+﻿<Window x:Class="EniverseClient.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EniverseClient.Views"
+        xmlns:prism="http://prismlibrary.com/"
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        mc:Ignorable="d"
+        Title="{Binding Title}" Width="1366" Height="768"
+        Background="Gainsboro">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+
+        <Border Style="{StaticResource CustomBorderStyle}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="8">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="4" ShadowDepth="0" Opacity="0.5"/>
+            </Border.Effect>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="16">
+                <Label Content="Star System:"/>
+                <TextBlock Text="{Binding CurrentSystemName}" Style="{StaticResource CustomTextBlockStyle}"/>
+
+                <Label Content="Planet:"/>
+                <TextBlock Text="{Binding CurrentPlanetName}" Style="{StaticResource CustomTextBlockStyle}"/>
+
+                <Label Content="Station:"/>
+                <TextBlock Text="{Binding CurrentStationName}" Style="{StaticResource CustomTextBlockStyle}"/>
+
+                <Label Content="X:" Margin="16 0 0 0" />
+                <TextBlock Text="{Binding CurrentCoordinateX}" Style="{StaticResource CustomTextBlockStyle}"/>
+
+                <Label Content="Y:"/>
+                <TextBlock Text="{Binding CurrentCoordinateY}" Style="{StaticResource CustomTextBlockStyle}"/>
+
+                <Label Content="Z:"/>
+                <TextBlock Text="{Binding CurrentCoordinateZ}" Style="{StaticResource CustomTextBlockStyle}"/>
+            </StackPanel>
+        </Border>
+
+        <Border Style="{StaticResource CustomBorderStyle}" Grid.Column="0" Grid.Row="1"  Margin="8">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="4" ShadowDepth="0" Opacity="0.5"/>
+            </Border.Effect>
+        </Border>
+
+        <Border Style="{StaticResource CustomBorderStyle}" Grid.Column="1" Grid.Row="1"  Margin="8">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="4" ShadowDepth="0" Opacity="0.5"/>
+            </Border.Effect>
+        </Border>
+
+        <Border Style="{StaticResource CustomBorderStyle}" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"  Margin="8">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="4" ShadowDepth="0" Opacity="0.5"/>
+            </Border.Effect>
+        </Border>
+    </Grid>
+</Window>
+
