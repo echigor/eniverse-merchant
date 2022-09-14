@@ -1,0 +1,46 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+using EniverseClient.Services;
+
+namespace EniverseClient.Models
+{
+    public class Product
+    {
+        private int _id;
+        public int ID
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+
+        private string _name;
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
+
+        private short _availableVolume;
+        public short AvailableVolume
+        {
+            get { return _availableVolume; }
+            set { _availableVolume = value; }
+        }
+
+        private decimal _price;
+        public decimal Price
+        {
+            get { return _price; }
+            set { _price = value; }
+        }
+
+        public Product()
+        {
+        }
+
+    }
+}

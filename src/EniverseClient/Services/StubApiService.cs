@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using EniverseClient.Models;
+
 namespace EniverseClient.Services
 {
     public class StubApiService : IApiService
@@ -14,9 +16,18 @@ namespace EniverseClient.Services
 
         }
 
-        public void LoadStarSystems()
+        public Station GetStationByID(int id)
         {
-            Debug.WriteLine("All system loaded");
+            return new Station()
+            {
+                ID = id,
+                Name = "B-84154",
+                PlanetName = "Beta-C845",
+                StarSystemName = "Andromeda-3124",
+                XCoordinate = 24_642_541D,
+                YCoordinate = 41_642_541D,
+                ZCoordinate = -24_642_541D
+            };
         }
     }
 }

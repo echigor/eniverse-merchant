@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using EniverseClient.Models;
+
 namespace EniverseClient.Services
 {
     public interface IApiService
     {
-        public void LoadStarSystems(); 
+        Station GetStationByID(int id);
     }
 }

@@ -20,47 +20,71 @@
             <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
 
-        <Border Style="{StaticResource CustomBorderStyle}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="8">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="4" ShadowDepth="0" Opacity="0.5"/>
-            </Border.Effect>
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="16">
-                <Label Content="Star System:"/>
-                <TextBlock Text="{Binding CurrentSystemName}" Style="{StaticResource CustomTextBlockStyle}"/>
+        <Border Style="{StaticResource CustomBorderStyle}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
+            <Grid DataContext="{Binding Merchant}">
+                <StackPanel DataContext="{Binding CurrentStation}"
+                            Orientation="Horizontal" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="8">
+                    <Label Content="You are here:"/>
+                
+                    <Label Content="Star System:"/>
+                    <TextBlock Text="{Binding StarSystemName}" Style="{StaticResource CustomTextBlockStyle}"/>
 
-                <Label Content="Planet:"/>
-                <TextBlock Text="{Binding CurrentPlanetName}" Style="{StaticResource CustomTextBlockStyle}"/>
+                    <Label Content="Planet:"/>
+                    <TextBlock Text="{Binding PlanetName}" Style="{StaticResource CustomTextBlockStyle}"/>
 
-                <Label Content="Station:"/>
-                <TextBlock Text="{Binding CurrentStationName}" Style="{StaticResource CustomTextBlockStyle}"/>
+                    <Label Content="Station:"/>
+                    <TextBlock Text="{Binding Name}" Style="{StaticResource CustomTextBlockStyle}"/>
 
-                <Label Content="X:" Margin="16 0 0 0" />
-                <TextBlock Text="{Binding CurrentCoordinateX}" Style="{StaticResource CustomTextBlockStyle}"/>
+                    <Label Content="X:" Margin="16 0 0 0" />
+                    <TextBlock Text="{Binding XCoordinate}" Style="{StaticResource CustomTextBlockStyle}"/>
 
-                <Label Content="Y:"/>
-                <TextBlock Text="{Binding CurrentCoordinateY}" Style="{StaticResource CustomTextBlockStyle}"/>
+                    <Label Content="Y:"/>
+                    <TextBlock Text="{Binding YCoordinate}" Style="{StaticResource CustomTextBlockStyle}"/>
 
-                <Label Content="Z:"/>
-                <TextBlock Text="{Binding CurrentCoordinateZ}" Style="{StaticResource CustomTextBlockStyle}"/>
-            </StackPanel>
+                    <Label Content="Z:"/>
+                    <TextBlock Text="{Binding ZCoordinate}" Style="{StaticResource CustomTextBlockStyle}"/>
+                </StackPanel>
+
+                <Label Content="Credits:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 112 0"/>
+                <TextBlock Text="{Binding Credits}" Style="{StaticResource CustomTextBlockStyle}" TextAlignment="Left"
+                           HorizontalAlignment="Right" VerticalAlignment="Center" Margin="8" Width="100"/>
+            </Grid>
         </Border>
 
-        <Border Style="{StaticResource CustomBorderStyle}" Grid.Column="0" Grid.Row="1"  Margin="8">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="4" ShadowDepth="0" Opacity="0.5"/>
-            </Border.Effect>
+        <Border Style="{StaticResource CustomBorderStyle}" Grid.Column="0" Grid.Row="1">
+            <ListView ItemsSource="{Binding TableEntity}" 
+                      BorderBrush="Transparent" Background="Transparent">
+                <ListView.View>
+                    <GridView>
+                        <GridView.Columns>
+                            <GridViewColumn Header="Товар" DisplayMemberBinding="{Binding ProductName}"/>
+                            <GridViewColumn Header="Количество" DisplayMemberBinding="{Binding AvailableVolume}"/>
+                            <GridViewColumn Header="Стоимость" DisplayMemberBinding="{Binding Price}"/>
+                        </GridView.Columns>
+                    </GridView>
+                </ListView.View>
+            </ListView>
         </Border>
 
-        <Border Style="{StaticResource CustomBorderStyle}" Grid.Column="1" Grid.Row="1"  Margin="8">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="4" ShadowDepth="0" Opacity="0.5"/>
-            </Border.Effect>
+        <Border Style="{StaticResource CustomBorderStyle}" Grid.Column="1" Grid.Row="1">
+            <ListView ItemsSource="{Binding TableEntity.Star}" 
+                      BorderBrush="Transparent" Background="Transparent">
+                <ListView.View>
+                    <GridView>
+                        <GridView.Columns>
+                            <GridViewColumn Header="Звёздная система" DisplayMemberBinding="{Binding StarSystemName}"/>
+                            <GridViewColumn Header="Планета" DisplayMemberBinding="{Binding PlanetName}"/>
+                            <GridViewColumn Header="Станция" DisplayMemberBinding="{Binding StationName}"/>
+                            <GridViewColumn Header="Товар" DisplayMemberBinding="{Binding ProductName}"/>
+                            <GridViewColumn Header="Количество" DisplayMemberBinding="{Binding AvailableVolume}"/>
+                            <GridViewColumn Header="Стоимость" DisplayMemberBinding="{Binding Price}"/>
+                        </GridView.Columns>
+                    </GridView>
+                </ListView.View>
+            </ListView>
         </Border>
 
-        <Border Style="{StaticResource CustomBorderStyle}" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"  Margin="8">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="4" ShadowDepth="0" Opacity="0.5"/>
-            </Border.Effect>
+        <Border Style="{StaticResource CustomBorderStyle}" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2">
         </Border>
     </Grid>
 </Window>
