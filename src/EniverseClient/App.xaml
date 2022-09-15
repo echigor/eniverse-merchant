@@ -7,18 +7,21 @@
     <Application.Resources>
         <Style x:Key="CustomTextBlockStyle" TargetType="{x:Type TextBlock}">
             <Setter Property="FontFamily" Value="Verdana"/>
+            <Setter Property="FontSize" Value="12"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Margin" Value="0 0 8 0"/>
         </Style>
 
         <Style x:Key="CustomTextBoxStyle" TargetType="{x:Type TextBox}">
             <Setter Property="FontFamily" Value="Verdana"/>
+            <Setter Property="FontSize" Value="12"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="TextDecorations" Value="Underline"/>
         </Style>
 
-        <Style x:Key="CustomLabelStyle" TargetType="{x:Type Label}">
+        <Style TargetType="{x:Type Label}">
             <Setter Property="FontFamily" Value="Verdana"/>
+            <Setter Property="FontSize" Value="12"/>
         </Style>
         
         <Style x:Key="CustomBorderStyle" TargetType="{x:Type Border}">
@@ -34,11 +37,19 @@
             </Setter>
         </Style>
 
-        <Style x:Key="CustomButtonStyle" TargetType="{x:Type Button}">
+        <Style TargetType="{x:Type Button}">
             <Setter Property="FontFamily" Value="Verdana"/>
-            <Setter Property="Width" Value="80"/>
-            <Setter Property="Height" Value="20"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Background" Value="Gainsboro"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="Gray"/>
+            <Style.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="4"/>
+                </Style>
+            </Style.Resources>
         </Style>
-        
     </Application.Resources>
 </prism:PrismApplication>
