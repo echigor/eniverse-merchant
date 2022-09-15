@@ -12,27 +12,28 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
 
-        <Border Style="{StaticResource CustomBorderStyle}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
+        <Border Style="{StaticResource CustomBorderStyle}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4">
             <Grid DataContext="{Binding Merchant}">
                 <StackPanel DataContext="{Binding CurrentStation}"
                             Orientation="Horizontal" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="8">
-                    <Label Content="You are here:"/>
+                    <Label Content="Вы здесь:"/>
                 
-                    <Label Content="Star System:"/>
+                    <Label Content="Звёздная система:"/>
                     <TextBlock Text="{Binding StarSystemName}" Style="{StaticResource CustomTextBlockStyle}"/>
 
-                    <Label Content="Planet:"/>
+                    <Label Content="Планета:"/>
                     <TextBlock Text="{Binding PlanetName}" Style="{StaticResource CustomTextBlockStyle}"/>
 
-                    <Label Content="Station:"/>
+                    <Label Content="Станция:"/>
                     <TextBlock Text="{Binding Name}" Style="{StaticResource CustomTextBlockStyle}"/>
 
                     <Label Content="X:" Margin="16 0 0 0" />
@@ -45,28 +46,162 @@
                     <TextBlock Text="{Binding ZCoordinate}" Style="{StaticResource CustomTextBlockStyle}"/>
                 </StackPanel>
 
-                <Label Content="Credits:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 112 0"/>
+                <Label Content="Кредиты:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 112 0"/>
                 <TextBlock Text="{Binding Credits}" Style="{StaticResource CustomTextBlockStyle}" TextAlignment="Left"
                            HorizontalAlignment="Right" VerticalAlignment="Center" Margin="8" Width="100"/>
             </Grid>
         </Border>
 
-        <Border Style="{StaticResource CustomBorderStyle}" Grid.Column="0" Grid.Row="1">
-            <ListView ItemsSource="{Binding TableEntity}" 
-                      BorderBrush="Transparent" Background="Transparent">
-                <ListView.View>
-                    <GridView>
-                        <GridView.Columns>
-                            <GridViewColumn Header="Товар" DisplayMemberBinding="{Binding ProductName}"/>
-                            <GridViewColumn Header="Количество" DisplayMemberBinding="{Binding AvailableVolume}"/>
-                            <GridViewColumn Header="Стоимость" DisplayMemberBinding="{Binding Price}"/>
-                        </GridView.Columns>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-        </Border>
+        <Grid Grid.Column="0" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="4*"/>
+            </Grid.RowDefinitions>
+            
+            <Border Style="{StaticResource CustomBorderStyle}" Grid.Row="0" Grid.Column="0">
+                <Grid DataContext="{Binding Merchant}">
+                    <StackPanel Orientation="Horizontal" Margin="8" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Label Content="Ваш корабль:" Style="{StaticResource CustomLabelStyle}"/>
+                        <TextBlock Text="{Binding StarshipName}" Style="{StaticResource CustomTextBlockStyle}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="8" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <Label Content="Грузовой отсек:" Style="{StaticResource CustomLabelStyle}"/>
+                        <TextBlock Text="{Binding CurrentStarshipStorage}" Style="{StaticResource CustomTextBlockStyle}" Margin="4"/>
+                        <Label Content="/"/>
+                        <TextBlock Text="{Binding StarshipStorage}" Style="{StaticResource CustomTextBlockStyle}" Margin="4"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="8" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                        <Label Content="Топливный бак:" Style="{StaticResource CustomLabelStyle}"/>
+                        <TextBlock Text="{Binding FuelTank}" Style="{StaticResource CustomTextBlockStyle}"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            
+            <Border Style="{StaticResource CustomBorderStyle}" Grid.Row="1" Grid.Column="0">
+                <ListView ItemsSource="{Binding Merchant.Products}" 
+                          SelectedItem="{Binding SelectedProductInStorage}"
+                          BorderBrush="Transparent" Background="Transparent">
+                    <ListView.View>
+                        <GridView>
+                            <GridView.Columns>
+                                <GridViewColumn Header="Товар" DisplayMemberBinding="{Binding Name}"/>
+                                <GridViewColumn Header="Количество" DisplayMemberBinding="{Binding Volume}"/>
+                            </GridView.Columns>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Border>
+        </Grid>
 
         <Border Style="{StaticResource CustomBorderStyle}" Grid.Column="1" Grid.Row="1">
+            <Grid DataContext="{Binding Merchant}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="2*"/>
+                </Grid.RowDefinitions>
+                
+                <!--Покупка-->
+                <Grid Grid.Column="0" Grid.Row="0" Visibility="Visible">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel  Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" 
+                                 Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Margin="32">
+                        <Label Content="Количество:" Style="{StaticResource CustomLabelStyle}"/>
+                        <TextBox Text="{Binding TradedVolume}" Style="{StaticResource CustomTextBoxStyle}"
+                                 Width="40" Margin="4" TextAlignment="Center" BorderThickness="0"/>
+                        <Label Content="/"/>
+                        <TextBlock Text="{Binding AvailableStarshipStorage}" Style="{StaticResource CustomTextBlockStyle}"
+                                    Width="40" Margin="4" TextAlignment="Center" />
+                    </StackPanel>
+                    <Button Content="Обнулить" Style="{StaticResource CustomButtonStyle}"
+                            Grid.Column="0" Grid.Row="0" Margin="16" VerticalAlignment="Bottom" 
+                            Command="{Binding SetZeroTradedVolume}"/>
+                    <Button Content="Максимум" Style="{StaticResource CustomButtonStyle}"
+                            Grid.Column="1" Grid.Row="0" Margin="16" VerticalAlignment="Bottom"
+                            Command="{Binding SetMaximumBuyableVolume}"/>
+
+                    <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal"
+                                VerticalAlignment="Top" HorizontalAlignment="Left" Margin="16">
+                        <Label Content="Расходы на покупку:" Style="{StaticResource CustomLabelStyle}"/>
+                        <TextBlock Text="{Binding TotalBuyPrice}" Style="{StaticResource CustomTextBlockStyle}"/>
+                    </StackPanel>
+                    <Button Content="Купить" Style="{StaticResource CustomButtonStyle}"
+                            Command="{Binding BuyProducts}"
+                            Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                            VerticalAlignment="Bottom" Margin="16"/>
+                </Grid>
+
+                <!--Продажа-->
+                <Grid Grid.Column="0" Grid.Row="0" Visibility="Collapsed">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel  Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" 
+                                 Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Margin="32">
+                        <Label Content="Количество:" Style="{StaticResource CustomLabelStyle}"/>
+                        <TextBox Text="{Binding TradedVolume}" Style="{StaticResource CustomTextBoxStyle}"
+                                 Width="40" Margin="4" TextAlignment="Center" BorderThickness="0"/>
+                        <Label Content="/"/>
+                        <TextBlock Text="{Binding SelectedProductInStorage.Volume}" Style="{StaticResource CustomTextBlockStyle}"
+                                    Width="40" Margin="4" TextAlignment="Center" />
+                    </StackPanel>
+                    <Button Content="Обнулить" Style="{StaticResource CustomButtonStyle}"
+                            Grid.Column="0" Grid.Row="0" Margin="16" VerticalAlignment="Bottom" 
+                            Command="{Binding SetZeroTradedVolume}"/>
+                    <Button Content="Максимум" Style="{StaticResource CustomButtonStyle}"
+                            Grid.Column="1" Grid.Row="0" Margin="16" VerticalAlignment="Bottom"
+                            Command="{Binding SetMaximumSellableVolume}"/>
+
+                    <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal"
+                                VerticalAlignment="Top" HorizontalAlignment="Left" Margin="16">
+                        <Label Content="Прибыль от продажи:" Style="{StaticResource CustomLabelStyle}"/>
+                        <TextBlock Text="{Binding TotalSellPrice}" Style="{StaticResource CustomTextBlockStyle}"/>
+                    </StackPanel>
+                    <Button Content="Продать" Style="{StaticResource CustomButtonStyle}"
+                            Command="{Binding SellProducts}"
+                            Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                            VerticalAlignment="Bottom" Margin="16"/>
+                </Grid>
+
+                <Grid Grid.Row="2" Grid.Column="0" Visibility="Visible">
+                    <StackPanel  Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="16">
+                        <Label Content="Расстояние:" Style="{StaticResource CustomLabelStyle}"/>
+                        <TextBlock Text="{Binding Distance}" Style="{StaticResource CustomTextBlockStyle}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal"
+                            VerticalAlignment="Top" HorizontalAlignment="Left" Margin="16 36 16 16">
+                        <Label Content="Расход топлива:" Style="{StaticResource CustomLabelStyle}"/>
+                        <TextBlock Text="{Binding FuelConsumption}" Style="{StaticResource CustomTextBlockStyle}"/>
+                    </StackPanel>
+                    <Button Content="В путь!" Style="{StaticResource CustomButtonStyle}"
+                            Command="{Binding TravelToStation}"
+                            Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                            VerticalAlignment="Top" HorizontalAlignment="Center" Margin="16 64"/>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <Border Style="{StaticResource CustomBorderStyle}" Grid.Column="2" Grid.Row="1">
             <ListView ItemsSource="{Binding TableEntity.Star}" 
                       BorderBrush="Transparent" Background="Transparent">
                 <ListView.View>
@@ -75,6 +210,19 @@
                             <GridViewColumn Header="Звёздная система" DisplayMemberBinding="{Binding StarSystemName}"/>
                             <GridViewColumn Header="Планета" DisplayMemberBinding="{Binding PlanetName}"/>
                             <GridViewColumn Header="Станция" DisplayMemberBinding="{Binding StationName}"/>
+                        </GridView.Columns>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Border>
+
+        <Border Style="{StaticResource CustomBorderStyle}" Grid.Column="3" Grid.Row="1">
+            <ListView ItemsSource="{Binding TableEntity.Station}" 
+                      SelectedItem="{Binding SelectedProductInMarket}"
+                      BorderBrush="Transparent" Background="Transparent">
+                <ListView.View>
+                    <GridView>
+                        <GridView.Columns>
                             <GridViewColumn Header="Товар" DisplayMemberBinding="{Binding ProductName}"/>
                             <GridViewColumn Header="Количество" DisplayMemberBinding="{Binding AvailableVolume}"/>
                             <GridViewColumn Header="Стоимость" DisplayMemberBinding="{Binding Price}"/>
@@ -82,9 +230,6 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-        </Border>
-
-        <Border Style="{StaticResource CustomBorderStyle}" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2">
         </Border>
     </Grid>
 </Window>

@@ -19,11 +19,11 @@ namespace EniverseClient.ViewModels
             set { SetProperty(ref _name, value); }
         }
 
-        private short _availableVolume;
-        public short AvailableVolume
+        private short _volume;
+        public short Volume
         {
-            get { return _availableVolume; }
-            set { SetProperty(ref _availableVolume, value); }
+            get { return _volume; }
+            set { SetProperty(ref _volume, value); }
         }
 
         private decimal _price;
@@ -33,15 +33,8 @@ namespace EniverseClient.ViewModels
             set { SetProperty(ref _price, value); }
         }
 
-        private Station _currentStation;
-        public Station CurrentStation
+        public ProductViewModel()
         {
-            get { return _currentStation; }
-        }
-
-        public ProductViewModel(Station station)
-        {
-            _currentStation = station ?? throw new ArgumentNullException(nameof(station));
         }
     }
 }

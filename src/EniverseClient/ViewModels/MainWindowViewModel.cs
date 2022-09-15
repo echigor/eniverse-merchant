@@ -36,6 +36,14 @@ namespace EniverseClient.ViewModels
             set { _products = value; }
         }
 
+        private bool _isSameSystem;
+        public bool IsSameSystem
+        {
+            get { return _isSameSystem; }
+            set { SetProperty(ref _isSameSystem, value); }
+        }
+
+
         public MainWindowViewModel(IApiService apiService)
         {
             _title = "Eniverse Merchant";
