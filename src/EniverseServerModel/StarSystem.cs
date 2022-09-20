@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Eniverse.Model
+namespace Eniverse.ServerModel
 {
     [Table(nameof(StarSystem))]
     public class StarSystem

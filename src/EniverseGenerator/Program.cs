@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Eniverse.DataGenerators;
-using Eniverse.Model;
+using Eniverse.ServerModel;
 
 using Microsoft.EntityFrameworkCore;
 

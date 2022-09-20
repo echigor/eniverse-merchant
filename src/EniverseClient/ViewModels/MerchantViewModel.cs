@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 
-using Eniverse.Model;
+using Eniverse.ClientModel;
 
 using Prism.Commands;
 using Prism.Mvvm;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 
-using Eniverse.Model;
+using Eniverse.ClientModel;
 using Eniverse.Services;
 
 using Prism.Mvvm;

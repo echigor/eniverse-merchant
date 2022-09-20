@@ -1,4 +1,4 @@
-﻿namespace Eniverse.Model
+﻿namespace Eniverse.ClientModel
 {
     public class Station
     {
