@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using EniverseClient.Models;
+using Eniverse.Model;
 
-namespace EniverseClient.Services
+namespace Eniverse.Services
 {
     public interface IApiService
     {

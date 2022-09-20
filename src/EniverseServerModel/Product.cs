@@ -6,22 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EniverseGenerator.Model
+namespace Eniverse.Model
 {
-    [Table(nameof(Station))]
-    public class Station
+    [Table(nameof(Product))]
+    public class Product
     {
         [Key]
         public int ID { get; set; }
 
-        [MaxLength(7)]
+        [MaxLength(50)]
         [Required]
         public string Name { get; set; }
-
-        public int PlanetID { get; set; }
-
-        [ForeignKey(nameof(PlanetID))]
-        public Planet Planet { get; set; }
 
         public ICollection<StationProduct> StationProducts { get; set; }
     }

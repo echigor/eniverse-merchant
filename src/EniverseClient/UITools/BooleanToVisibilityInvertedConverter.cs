@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace EniverseClient.UITools
+namespace Eniverse.UITools
 {
     public class BooleanToVisibilityInvertedConverter: IValueConverter
     {

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EniverseGenerator.Model
+namespace Eniverse.Model
 {
     [Table(nameof(StationProduct))]
     public class StationProduct

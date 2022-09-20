@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using EniverseClient.Services;
-
-namespace EniverseClient.Models
+﻿namespace Eniverse.Model
 {
     public class Product
     {

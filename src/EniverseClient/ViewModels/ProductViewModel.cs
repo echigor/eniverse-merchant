@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using EniverseClient.Models;
+using Eniverse.Model;
 
 using Prism.Mvvm;
 
-namespace EniverseClient.ViewModels
+namespace Eniverse.ViewModels
 {
     public class ProductViewModel : BindableBase
     {

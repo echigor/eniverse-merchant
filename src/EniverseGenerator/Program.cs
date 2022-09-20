@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using EniverseGenerator.DataGenerators;
-using EniverseGenerator.Model;
+using Eniverse.DataGenerators;
+using Eniverse.Model;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace EniverseGenerator
+namespace Eniverse
 {
     class Program
     {

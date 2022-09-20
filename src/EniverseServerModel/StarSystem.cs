@@ -6,23 +6,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EniverseGenerator.Model
+namespace Eniverse.Model
 {
-    [Table(nameof(Planet))]
-    public class Planet
+    [Table(nameof(StarSystem))]
+    public class StarSystem
     {
         [Key]
         public int ID { get; set; }
 
-        [MaxLength(13)]
+        [MaxLength(19)]
         [Required]
         public string Name { get; set; }
+        public double XCoordinate { get; set; }
+        public double YCoordinate { get; set; }
+        public double ZCoordinate { get; set; }
 
-        public int StarSystemID { get; set; }
-
-        [ForeignKey(nameof(StarSystemID))]
-        public StarSystem StarSystem { get; set; }
-
-        public ICollection<Station> Stations { get; set; }
+        public ICollection<Planet> Planets { get; set; }
     }
 }

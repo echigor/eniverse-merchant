@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using EniverseGenerator.Model;
+using Eniverse.Model;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace EniverseGenerator
+namespace Eniverse
 {
     public class DatabaseContext : DbContext
     {

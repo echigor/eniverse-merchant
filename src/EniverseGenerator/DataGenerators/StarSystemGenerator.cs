@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using EniverseGenerator.Model;
+using Eniverse.Model;
 
-namespace EniverseGenerator.DataGenerators
+namespace Eniverse.DataGenerators
 {
     public class StarSystemGenerator
     {

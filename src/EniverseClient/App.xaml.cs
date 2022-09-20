@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 
-using EniverseClient.Services;
-using EniverseClient.Views;
+using Eniverse.Services;
+using Eniverse.Views;
 
 using Prism.Ioc;
 using Prism.Unity;
 
-namespace EniverseClient
+namespace Eniverse
 {
     /// <summary>
     /// Interaction logic for App.xaml
