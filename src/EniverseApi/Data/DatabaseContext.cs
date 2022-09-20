@@ -19,8 +19,9 @@ namespace EniverseApi.Data
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
-            Database.EnsureCreated();
+           // Database.EnsureCreated();
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<StationProduct>().HasKey(x => new { x.StationID, x.ProductID });

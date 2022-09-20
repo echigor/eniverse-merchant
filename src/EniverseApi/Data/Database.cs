@@ -18,12 +18,20 @@ namespace EniverseApi.Data
             _databaseContext = databaseContext ?? throw new ArgumentNullException(nameof(databaseContext));
         }
 
-        public Station GetBy(int id)
+        public Station GetStationByID(int id)
         {
             return _databaseContext
-                .Stations
-                .Include(x => x.Planet).Include(x => x.Planet.StarSystem)
-                .FirstOrDefault(x => x.ID == id);
+                   .Stations
+                   .Include(x => x.Planet).Include(x => x.Planet.StarSystem)
+                   .FirstOrDefault(x => x.ID == id);
+        }
+
+        public IEnumerable<StationProduct> GetProductsByStationID(int stationID)
+        {
+            return _databaseContext
+                   .StationProducts
+                   .Include(x => x.Product)
+                   .Where(x => x.StationID == stationID);
         }
     }
 }

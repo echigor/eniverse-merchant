@@ -25,10 +25,10 @@ namespace EniverseApi.Controllers
             _database = database ?? throw new ArgumentNullException(nameof(database));
         }
 
-        [HttpGet("by-id")]
-        public Eniverse.ClientModel.Station GetByID(int id)
+        [HttpGet("station-by-id")]
+        public Eniverse.ClientModel.Station GetStationByID(int id)
         {
-            Station station = _database.GetBy(id);
+            Station station = _database.GetStationByID(id);
 
             Planet planet = station.Planet;
             StarSystem starSystem = planet.StarSystem;
@@ -43,6 +43,20 @@ namespace EniverseApi.Controllers
                 YCoordinate = starSystem.YCoordinate,
                 ZCoordinate = starSystem.ZCoordinate
             };
+        }
+
+        [HttpGet("products-by-station-id")]
+        public IEnumerable<Eniverse.ClientModel.Product> GetProducts(int stationID)
+        {
+            IEnumerable<StationProduct> stationProduct = _database.GetProductsByStationID(stationID);
+
+            return stationProduct.Select(x => new Eniverse.ClientModel.Product()
+            {
+                ID = x.ProductID,
+                Name = x.Product.Name,
+                AvailableVolume = x.AvailableVolume,
+                Price = x.Price                
+            }).ToList();
         }
     }
 }

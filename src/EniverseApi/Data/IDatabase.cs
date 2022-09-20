@@ -9,6 +9,7 @@ namespace EniverseApi.Data
 {
     public interface IDatabase
     {
-        public Station GetBy(int id);
+        public Station GetStationByID(int id);
+        public IEnumerable<StationProduct> GetProductsByStationID(int stationID);
     }
 }
