@@ -26,14 +26,14 @@
                 <StackPanel DataContext="{Binding CurrentStation}"
                             Orientation="Horizontal" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="8">
                     <Label Content="Вы здесь:"/>
-                
+
                     <Label Content="Звёздная система:"/>
                     <TextBlock Text="{Binding StarSystemName}" Style="{StaticResource CustomTextBlockStyle}"/>
 
                     <Label Content="Планета:"/>
                     <TextBlock Text="{Binding PlanetName}" Style="{StaticResource CustomTextBlockStyle}"/>
 
-                        <Label Content="Станция:"/>
+                    <Label Content="Станция:"/>
                     <TextBlock Text="{Binding Name}" Style="{StaticResource CustomTextBlockStyle}"/>
 
                     <Label Content="X:" Margin="16 0 0 0" />
@@ -52,7 +52,7 @@
             </Grid>
         </Border>
 
-            
+
         <Border Style="{StaticResource CustomBorderStyle}" Grid.Row="1" Grid.Column="0">
             <StackPanel DataContext="{Binding Merchant}">
                 <StackPanel Orientation="Horizontal" Margin="8" HorizontalAlignment="Left" VerticalAlignment="Top">
@@ -71,7 +71,7 @@
                 </StackPanel>
             </StackPanel>
         </Border>
-            
+
         <Border Style="{StaticResource CustomBorderStyle}" Grid.Row="2" Grid.Column="0">
             <ListView ItemsSource="{Binding Merchant.Products}" 
                         SelectedItem="{Binding SelectedProductInStorage}"
@@ -88,12 +88,57 @@
         </Border>
 
         <Border Style="{StaticResource CustomBorderStyle}" Grid.Column="1" Grid.Row="1">
-            <Label Content="Filters"/>
+            <Grid>
+                <Label Content="Фильтры" HorizontalAlignment="Right"/>
+
+                <StackPanel Orientation="Vertical" Margin="16" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Label Content="Звёздная система"/>
+                    <TextBox Text="{Binding StarSystemFilter}" Width="150" Style="{StaticResource CustomTextBoxStyle}"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Margin="16" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <Label Content="Планета"/>
+                    <TextBox Text="{Binding PlanetFilter}" Width="150" Style="{StaticResource CustomTextBoxStyle}"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Margin="16" HorizontalAlignment="Right" VerticalAlignment="Top">
+                    <Label Content="Станция"/>
+                    <TextBox Text="{Binding StationFilter}" Width="150" Style="{StaticResource CustomTextBoxStyle}"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Margin="16" HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <Label Content="Название товара"/>
+                    <TextBox Width="150" Style="{StaticResource CustomTextBoxStyle}"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Margin="16" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Label Content="Минимум на складе"/>
+                    <TextBox Text="{Binding ProductVolumeFilter}" Width="150" Style="{StaticResource CustomTextBoxStyle}"/>
+                </StackPanel>
+
+                <!--<StackPanel Orientation="Vertical" Margin="16" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <CheckBox IsChecked="False" Content="заглушка" Margin="0 4"/>
+                    <TextBox Text="{Binding stub}" Width="150" Style="{StaticResource CustomTextBoxStyle}"/>
+                </StackPanel>-->
+
+                <StackPanel Orientation="Vertical" Margin="16" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                    <Label Content="Минимальная цена"/>
+                    <TextBox Text="{Binding MinPriceFilter}" Width="150" Style="{StaticResource CustomTextBoxStyle}"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Margin="16" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                    <Label Content="Максимальная цена"/>
+                    <TextBox Text="{Binding MaxPriceFilter}" Width="150" Style="{StaticResource CustomTextBoxStyle}"/>
+                </StackPanel>
+
+                <Button Content="Применить" Command="{Binding AcceptFilter}"
+                        Margin="16 16 42 16" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+            </Grid>
         </Border>
 
         <Border Style="{StaticResource CustomBorderStyle}" Grid.Column="2" Grid.Row="1">
             <Grid DataContext="{Binding Merchant}">
-               
+
                 <!--Покупка-->
                 <Grid Grid.Column="0" Grid.Row="0" Visibility="Visible">
                     <Grid.ColumnDefinitions>

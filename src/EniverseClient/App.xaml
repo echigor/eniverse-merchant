@@ -16,7 +16,7 @@
             <Setter Property="FontFamily" Value="Verdana"/>
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="TextDecorations" Value="Underline"/>
+            <Setter Property="BorderThickness" Value="1,0,0,1"/>
         </Style>
 
         <Style TargetType="{x:Type Label}">
@@ -27,7 +27,7 @@
         <Style x:Key="CustomBorderStyle" TargetType="{x:Type Border}">
             <Setter Property="BorderBrush" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="CornerRadius" Value="4"/>
             <Setter Property="Background" Value="White"/>
             <Setter Property="Margin" Value="16"/>
             <Setter Property="Effect">
