@@ -90,13 +90,6 @@ namespace Eniverse.ViewModels
             set { SetProperty(ref _selectedProductInStorage, value); }
         }
 
-        private ProductViewModel _selectedProductInMarket;
-        public ProductViewModel SelectedProductInMarket
-        {
-            get { return _selectedProductInMarket; }
-            set { SetProperty(ref _selectedProductInMarket, value); }
-        }
-
         private DelegateCommand _setZeroTradedVolume;
         public DelegateCommand SetZeroTradedVolume
         {
@@ -114,8 +107,6 @@ namespace Eniverse.ViewModels
         {
             get { return _setMaximumSellableVolume; }
         }
-
-
 
         public MerchantViewModel(Station station)
         {

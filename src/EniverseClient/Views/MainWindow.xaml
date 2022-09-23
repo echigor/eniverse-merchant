@@ -236,14 +236,16 @@
         </Border>
 
         <Border Style="{StaticResource CustomBorderStyle}" Grid.Column="1" Grid.Row="2">
-            <ListView ItemsSource="{Binding TableEntity.Star}" 
+            <ListView ItemsSource="{Binding Stations}" 
+                      SelectedItem="{Binding ObservableStation}"
                       BorderBrush="Transparent" Background="Transparent">
                 <ListView.View>
                     <GridView>
                         <GridView.Columns>
                             <GridViewColumn Header="Звёздная система" DisplayMemberBinding="{Binding StarSystemName}"/>
                             <GridViewColumn Header="Планета" DisplayMemberBinding="{Binding PlanetName}"/>
-                            <GridViewColumn Header="Станция" DisplayMemberBinding="{Binding StationName}"/>
+                            <GridViewColumn Header="Станция" DisplayMemberBinding="{Binding Name}"/>
+                            <GridViewColumn Header="Расстояние" DisplayMemberBinding="{Binding Distance}"/>
                         </GridView.Columns>
                     </GridView>
                 </ListView.View>
@@ -251,13 +253,12 @@
         </Border>
 
         <Border Style="{StaticResource CustomBorderStyle}" Grid.Column="3" Grid.Row="2">
-            <ListView ItemsSource="{Binding TableEntity.Station}" 
-                      SelectedItem="{Binding SelectedProductInMarket}"
+            <ListView ItemsSource="{Binding ObservableStation.Products}" 
                       BorderBrush="Transparent" Background="Transparent">
                 <ListView.View>
                     <GridView>
                         <GridView.Columns>
-                            <GridViewColumn Header="Товар" DisplayMemberBinding="{Binding ProductName}"/>
+                            <GridViewColumn Header="Товар" DisplayMemberBinding="{Binding Name}"/>
                             <GridViewColumn Header="Количество" DisplayMemberBinding="{Binding AvailableVolume}"/>
                             <GridViewColumn Header="Стоимость" DisplayMemberBinding="{Binding Price}"/>
                         </GridView.Columns>

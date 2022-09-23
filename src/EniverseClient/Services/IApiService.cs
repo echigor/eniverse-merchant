@@ -10,6 +10,7 @@ namespace Eniverse.Services
 {
     public interface IApiService
     {
-        Station GetStationByID(int id);
+        Task<Station> GetStationByIDAsync(int id);
+        Task<List<Product>> GetProductsByStationIDAsync(int id);
     }
 }

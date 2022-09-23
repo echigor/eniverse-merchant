@@ -22,7 +22,7 @@ namespace Eniverse
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterInstance<IApiService>(new StubApiService());
+            containerRegistry.RegisterInstance<IApiService>(new ApiService(@"http://localhost:8031/"));
         }
     }
 }
