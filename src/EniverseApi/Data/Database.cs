@@ -26,6 +26,20 @@ namespace EniverseApi.Data
                    .FirstOrDefault(x => x.ID == id);
         }
 
+        public IEnumerable<Station> GetStations(string starSystemName, string planetName, int productID, short minProductVolume)
+        {
+            return _databaseContext
+                   .StationProducts
+                   .Include(x => x.Station).Include(x => x.Station.Planet).Include(x => x.Station.Planet.StarSystem)
+                   .Where(x => string.IsNullOrEmpty(starSystemName) || x.Station.Planet.StarSystem.Name.StartsWith(starSystemName))
+                   .Where(x => string.IsNullOrEmpty(planetName) || x.Station.Planet.Name.StartsWith(planetName))
+                   .Where(x => (productID == 0) || x.ProductID == productID)
+                   .Where(x => (minProductVolume == 0) || x.AvailableVolume >= minProductVolume)
+                   .Select(x => x.Station)
+                   .Distinct()
+                   .Take(5_000);
+        }
+
         public IEnumerable<StationProduct> GetProductsByStationID(int stationID)
         {
             return _databaseContext
@@ -33,5 +47,11 @@ namespace EniverseApi.Data
                    .Include(x => x.Product)
                    .Where(x => x.StationID == stationID);
         }
+
+        public IEnumerable<Product> GetAllProducts()
+        {
+            return _databaseContext.Products;
+        }
+
     }
 }

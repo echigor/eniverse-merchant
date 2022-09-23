@@ -9,7 +9,9 @@ namespace EniverseApi.Data
 {
     public interface IDatabase
     {
-        public Station GetStationByID(int id);
-        public IEnumerable<StationProduct> GetProductsByStationID(int stationID);
+        Station GetStationByID(int id);
+        IEnumerable<Station> GetStations(string starSystemName, string planetName, int productID, short minProductVolume);
+        IEnumerable<StationProduct> GetProductsByStationID(int stationID);
+        IEnumerable<Product> GetAllProducts();
     }
 }

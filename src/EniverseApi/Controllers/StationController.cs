@@ -45,17 +45,18 @@ namespace EniverseApi.Controllers
             };
         }
 
-        [HttpGet("products-by-station-id")]
-        public IEnumerable<Eniverse.ClientModel.Product> GetProducts(int stationID)
+        [HttpGet("filter")]
+        public IEnumerable<Eniverse.ClientModel.Station> GetStations(string starSystemName, string planetName, int productID, short minProductVolume)
         {
-            IEnumerable<StationProduct> stationProduct = _database.GetProductsByStationID(stationID);
-
-            return stationProduct.Select(x => new Eniverse.ClientModel.Product()
+            return _database.GetStations(starSystemName, planetName, productID, minProductVolume).Select(x => new Eniverse.ClientModel.Station()
             {
-                ID = x.ProductID,
-                Name = x.Product.Name,
-                AvailableVolume = x.AvailableVolume,
-                Price = x.Price                
+                ID = x.ID,
+                Name = x.Name,
+                PlanetName = x.Planet.Name,
+                StarSystemName = x.Planet.StarSystem.Name,
+                XCoordinate = x.Planet.StarSystem.XCoordinate,
+                YCoordinate = x.Planet.StarSystem.YCoordinate,
+                ZCoordinate = x.Planet.StarSystem.ZCoordinate
             }).ToList();
         }
     }

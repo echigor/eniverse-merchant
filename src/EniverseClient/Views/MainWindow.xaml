@@ -89,8 +89,6 @@
 
         <Border Style="{StaticResource CustomBorderStyle}" Grid.Column="1" Grid.Row="1">
             <Grid>
-                <Label Content="Фильтры" HorizontalAlignment="Right"/>
-
                 <StackPanel Orientation="Vertical" Margin="16" HorizontalAlignment="Left" VerticalAlignment="Top">
                     <Label Content="Звёздная система"/>
                     <TextBox Text="{Binding StarSystemFilter}" Width="150" Style="{StaticResource CustomTextBoxStyle}"/>
@@ -101,14 +99,13 @@
                     <TextBox Text="{Binding PlanetFilter}" Width="150" Style="{StaticResource CustomTextBoxStyle}"/>
                 </StackPanel>
 
-                <StackPanel Orientation="Vertical" Margin="16" HorizontalAlignment="Right" VerticalAlignment="Top">
-                    <Label Content="Станция"/>
-                    <TextBox Text="{Binding StationFilter}" Width="150" Style="{StaticResource CustomTextBoxStyle}"/>
-                </StackPanel>
-
                 <StackPanel Orientation="Vertical" Margin="16" HorizontalAlignment="Left" VerticalAlignment="Center">
-                    <Label Content="Название товара"/>
-                    <TextBox Width="150" Style="{StaticResource CustomTextBoxStyle}"/>
+                    <Label Content="Товар"/>
+                    <ComboBox ItemsSource="{Binding Products}"
+                              DisplayMemberPath="Name"
+                              SelectedItem="{Binding ProductFilter}"
+                              Width="150" Height="22"
+                              FontSize="12" FontFamily="Verdana" MaxDropDownHeight="200"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Vertical" Margin="16" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -116,22 +113,7 @@
                     <TextBox Text="{Binding ProductVolumeFilter}" Width="150" Style="{StaticResource CustomTextBoxStyle}"/>
                 </StackPanel>
 
-                <!--<StackPanel Orientation="Vertical" Margin="16" HorizontalAlignment="Right" VerticalAlignment="Center">
-                    <CheckBox IsChecked="False" Content="заглушка" Margin="0 4"/>
-                    <TextBox Text="{Binding stub}" Width="150" Style="{StaticResource CustomTextBoxStyle}"/>
-                </StackPanel>-->
-
-                <StackPanel Orientation="Vertical" Margin="16" HorizontalAlignment="Left" VerticalAlignment="Bottom">
-                    <Label Content="Минимальная цена"/>
-                    <TextBox Text="{Binding MinPriceFilter}" Width="150" Style="{StaticResource CustomTextBoxStyle}"/>
-                </StackPanel>
-
-                <StackPanel Orientation="Vertical" Margin="16" HorizontalAlignment="Center" VerticalAlignment="Bottom">
-                    <Label Content="Максимальная цена"/>
-                    <TextBox Text="{Binding MaxPriceFilter}" Width="150" Style="{StaticResource CustomTextBoxStyle}"/>
-                </StackPanel>
-
-                <Button Content="Применить" Command="{Binding AcceptFilter}"
+                <Button Content="Применить" Command="{Binding ApplyFilterCommand}"
                         Margin="16 16 42 16" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
             </Grid>
         </Border>

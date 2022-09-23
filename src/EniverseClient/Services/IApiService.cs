@@ -11,6 +11,8 @@ namespace Eniverse.Services
     public interface IApiService
     {
         Task<Station> GetStationByIDAsync(int id);
+        Task<List<Station>> GetStations(string starSystemName, string planetName, int productID, short minProductVolume);
         Task<List<Product>> GetProductsByStationIDAsync(int id);
+        Task<List<ProductName>> GetProductNames();
     }
 }

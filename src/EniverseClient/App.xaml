@@ -17,6 +17,8 @@
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="BorderThickness" Value="1,0,0,1"/>
+            <Setter Property="Height" Value="22"/>
+            <Setter Property="VerticalContentAlignment" Value="Bottom"/>
         </Style>
 
         <Style TargetType="{x:Type Label}">

@@ -18,6 +18,7 @@ namespace Eniverse.Services
     {
         private readonly HttpClient _client;
         private const string StationController = "station";
+        private const string ProductController = "product";
 
         public ApiService(string apiEndpoint)
         {
@@ -48,6 +49,20 @@ namespace Eniverse.Services
             return RequestGet<Station>(uri);
         }
 
+        public Task<List<Station>> GetStations(string starSystemName, string planetName, int productID, short minProductVolume)
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>()
+            {
+                { nameof(starSystemName), starSystemName },
+                { nameof(planetName), planetName },
+                { nameof(productID), productID },
+                { nameof(minProductVolume), minProductVolume }
+            };
+
+            Uri uri = EncodeUriWithParameters(StationController, "filter", parameters);
+            return RequestGet<List<Station>>(uri);
+        }
+
         public Task<List<Product>> GetProductsByStationIDAsync(int stationID)
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>()
@@ -55,8 +70,14 @@ namespace Eniverse.Services
                 { nameof(stationID), stationID }
             };
 
-            Uri uri = EncodeUriWithParameters(StationController, "products-by-station-id", parameters);
+            Uri uri = EncodeUriWithParameters(ProductController, "list-by-station-id", parameters);
             return RequestGet<List<Product>>(uri);
+        }
+
+        public Task<List<ProductName>> GetProductNames()
+        {
+            Uri uri = EncodeUriWithParameters(ProductController, "names", null);
+            return RequestGet<List<ProductName>>(uri);
         }
 
         private async Task<TResult> RequestGet<TResult>(Uri uri) where TResult: new()
@@ -84,9 +105,12 @@ namespace Eniverse.Services
         {
             NameValueCollection namedParameters = HttpUtility.ParseQueryString(string.Empty);
 
-            foreach (var parameter in parameters)
+            if (parameters != null)
             {
-                namedParameters.Add(parameter.Key.ToLower(), parameter.Value?.ToString());
+                foreach (var parameter in parameters)
+                {
+                    namedParameters.Add(parameter.Key.ToLower(), parameter.Value?.ToString());
+                }
             }
 
             string result = $"{controller}/{method}?{namedParameters.ToString()}";
