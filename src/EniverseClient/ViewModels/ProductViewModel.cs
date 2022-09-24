@@ -12,29 +12,30 @@ namespace Eniverse.ViewModels
 {
     public class ProductViewModel : BindableBase
     {
-        private string _name;
+        private Product _product;
+        public int ID
+        {
+            get { return _product.ID; }
+        }
+
         public string Name
         {
-            get { return _name; }
-            set { SetProperty(ref _name, value); }
+            get { return _product.Name; }
         }
 
-        private short _volume;
         public short Volume
         {
-            get { return _volume; }
-            set { SetProperty(ref _volume, value); }
+            get { return _product.AvailableVolume; }
         }
 
-        private decimal _price;
         public decimal Price
         {
-            get { return _price; }
-            set { SetProperty(ref _price, value); }
+            get { return _product.Price; }
         }
 
-        public ProductViewModel()
+        public ProductViewModel(Product product)
         {
+            _product = product ?? throw new ArgumentNullException(nameof(product));
         }
     }
 }

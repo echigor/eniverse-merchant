@@ -42,8 +42,8 @@ namespace Eniverse.ViewModels
             get { return _distance; }
         }
 
-        private ObservableCollection<Product> _products;
-        public ObservableCollection<Product> Products
+        private ObservableCollection<ProductViewModel> _products;
+        public ObservableCollection<ProductViewModel> Products
         {
             get { return _products; }
         }
@@ -52,7 +52,7 @@ namespace Eniverse.ViewModels
         {
             _station = station ?? throw new ArgumentNullException(nameof(station));
 
-            _products = new ObservableCollection<Product>();
+            _products = new ObservableCollection<ProductViewModel>();
 
             if (station.StarSystemName == merchantStation.StarSystemName)
             {
@@ -64,7 +64,7 @@ namespace Eniverse.ViewModels
                 double deltaY = station.YCoordinate - merchantStation.YCoordinate;
                 double deltaZ = station.ZCoordinate - merchantStation.ZCoordinate;
 
-                _distance = Math.Sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
+                _distance = Math.Round(Math.Sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ) / 9_460_800D, 4);
             }
         }
     }

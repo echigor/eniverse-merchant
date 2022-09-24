@@ -49,7 +49,7 @@ namespace Eniverse.Services
             return RequestGet<Station>(uri);
         }
 
-        public Task<List<Station>> GetStations(string starSystemName, string planetName, int productID, short minProductVolume)
+        public Task<List<Station>> GetStationsAsync(string starSystemName, string planetName, int productID, short minProductVolume)
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>()
             {
@@ -74,7 +74,7 @@ namespace Eniverse.Services
             return RequestGet<List<Product>>(uri);
         }
 
-        public Task<List<ProductName>> GetProductNames()
+        public Task<List<ProductName>> GetProductNamesAsync()
         {
             Uri uri = EncodeUriWithParameters(ProductController, "names", null);
             return RequestGet<List<ProductName>>(uri);
