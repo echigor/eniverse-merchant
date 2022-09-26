@@ -56,6 +56,22 @@ namespace Eniverse
                 GenerateStationProducts(database);
             }
 
+            using (DatabaseContext database = new DatabaseContext())
+            {
+                database.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+                database.ChangeTracker.AutoDetectChangesEnabled = false;
+
+                GenerateMerchants(database);
+            }
+
+            using (DatabaseContext database = new DatabaseContext())
+            {
+                database.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+                database.ChangeTracker.AutoDetectChangesEnabled = false;
+
+                GenerateFuel(database);
+            }
+
             Console.WriteLine("Jobs done!");
             Console.ReadLine();
         }
@@ -164,6 +180,47 @@ namespace Eniverse
             }
 
             Console.WriteLine($"Station products successfully added to database: {DateTime.Now.TimeOfDay}\n");
+        }
+
+        static void GenerateMerchants(DatabaseContext database)
+        {
+            MerchantGenerator merchantGenerator = new MerchantGenerator();
+            Console.WriteLine("Merchant generation started");
+
+            for (int i = 1; i <= MerchantGenerator.TotalMerchants; i++)
+            {
+                Merchant merchant =  merchantGenerator.GenerateNext();
+
+                database.Merchants.Add(merchant);
+                database.SaveChanges();
+            }
+
+            Console.WriteLine($"Merchants successfully added to database: {DateTime.Now.TimeOfDay}\n");
+        }
+
+        static void GenerateFuel(DatabaseContext database)
+        {
+            Console.WriteLine("Fuel generation started");
+
+            Product fuel = database.Products.First(x => x.Name == "Топливо");
+
+            List<Merchant> merchants = database.Merchants.ToList();
+
+            for (int i = 0; i < merchants.Count; i++)
+            {
+                MerchantProduct merchantFuel = new MerchantProduct()
+                {
+                    MerchantID = merchants[i].ID,
+                    ProductID = fuel.ID,
+                    Volume = 32,
+                    Price = 0
+                };
+
+                database.MerchantProducts.Add(merchantFuel);
+                database.SaveChanges();
+            }
+
+            Console.WriteLine($"Fuel for merchants successfully added to database: {DateTime.Now.TimeOfDay}\n");
         }
 
         static void WriteProgressBar(int index, int totalCount)

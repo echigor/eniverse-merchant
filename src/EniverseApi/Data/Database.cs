@@ -36,8 +36,7 @@ namespace EniverseApi.Data
                    .Where(x => (productID == 0) || x.ProductID == productID)
                    .Where(x => (minProductVolume == 0) || x.AvailableVolume >= minProductVolume)
                    .Select(x => x.Station)
-                   .Distinct()
-                   .Take(5_000);
+                   .Distinct();
         }
 
         public IEnumerable<StationProduct> GetProductsByStationID(int stationID)

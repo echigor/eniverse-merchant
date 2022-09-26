@@ -223,6 +223,9 @@
         <Border Style="{StaticResource CustomBorderStyle}" Grid.Column="1" Grid.Row="2">
             <ListView ItemsSource="{Binding Stations}" 
                       SelectedItem="{Binding ObservableStation}"
+                      VirtualizingPanel.IsVirtualizing="True"
+                      VirtualizingPanel.VirtualizationMode="Recycling"
+                      VirtualizingPanel.ScrollUnit="Item"
                       BorderBrush="Transparent" Background="Transparent">
                 <ListView.View>
                     <GridView>
@@ -245,7 +248,7 @@
                     <GridView>
                         <GridView.Columns>
                             <GridViewColumn Header="Товар" DisplayMemberBinding="{Binding Name}"/>
-                            <GridViewColumn Header="Количество" DisplayMemberBinding="{Binding AvailableVolume}"/>
+                            <GridViewColumn Header="Количество" DisplayMemberBinding="{Binding Volume}"/>
                             <GridViewColumn Header="Стоимость" DisplayMemberBinding="{Binding Price}"/>
                         </GridView.Columns>
                     </GridView>

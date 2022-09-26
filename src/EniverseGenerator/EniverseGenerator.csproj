@@ -11,10 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Model\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\EniverseServerModel\EniverseServerModel.csproj" />
   </ItemGroup>
 

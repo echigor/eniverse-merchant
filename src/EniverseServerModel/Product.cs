@@ -19,5 +19,7 @@ namespace Eniverse.ServerModel
         public string Name { get; set; }
 
         public ICollection<StationProduct> StationProducts { get; set; }
+
+        public ICollection<MerchantProduct> MerchantProducts { get; set; }
     }
 }

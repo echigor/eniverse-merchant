@@ -24,5 +24,7 @@ namespace Eniverse.ServerModel
         public Planet Planet { get; set; }
 
         public ICollection<StationProduct> StationProducts { get; set; }
+
+        public ICollection<Merchant> Merchants { get; set; }
     }
 }

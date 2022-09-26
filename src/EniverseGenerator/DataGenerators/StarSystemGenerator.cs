@@ -10,8 +10,8 @@ namespace Eniverse.DataGenerators
 {
     public class StarSystemGenerator
     {
-        public const int TotalStars = 53_141;
-        //public const int TotalStars = 531;
+        //public const int TotalStars = 53_141;
+        public const int TotalStars = 531;
         //79
         private string[] _starSystemNames = new string[]
         { 

@@ -10,8 +10,8 @@ namespace Eniverse.DataGenerators
 {
     public class PlanetGenerator
     {
-        public const int TotalPlanets = 243_538;
-        //public const int TotalPlanets = 2_435;
+        //public const int TotalPlanets = 243_538;
+        public const int TotalPlanets = 2_435;
 
         //23
         private string[] _greekAlphabet = new string[]
