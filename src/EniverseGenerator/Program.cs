@@ -212,8 +212,7 @@ namespace Eniverse
                 {
                     MerchantID = merchants[i].ID,
                     ProductID = fuel.ID,
-                    Volume = 32,
-                    Price = 0
+                    Volume = 32
                 };
 
                 database.MerchantProducts.Add(merchantFuel);

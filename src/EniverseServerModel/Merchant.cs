@@ -14,12 +14,15 @@ namespace Eniverse.ServerModel
         [Key]
         public int ID { get; set; }
 
-        public int Credits { get; set; }
+        [Column(TypeName = "decimal(8,2)")]
+        public decimal Credits { get; set; }
 
-        [MaxLength(16)]
+        [MaxLength(20)]
         [Required]
         public string StarshipName { get; set; }
-       
+
+        public short CargoHoldVolume { get; set; }
+
         public int CurrentStationID { get; set; }
 
         [ForeignKey(nameof(CurrentStationID))]

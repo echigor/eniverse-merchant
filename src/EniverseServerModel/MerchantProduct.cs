@@ -19,9 +19,6 @@ namespace Eniverse.ServerModel
 
         public short Volume { get; set; }
 
-        [Column(TypeName = "decimal(8,2)")]
-        public decimal Price { get; set; }
-
         [ForeignKey(nameof(MerchantID))]
         public Merchant Merchant { get; set; }
 

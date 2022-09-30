@@ -10,7 +10,7 @@ namespace Eniverse.DataGenerators
 {
     public class MerchantGenerator
     {
-        public const int TotalMerchants = 3;
+        public const int TotalMerchants = 100;
 
         private Random _random;
 
@@ -28,6 +28,7 @@ namespace Eniverse.DataGenerators
             result.Credits = 10_000;
             result.CurrentStationID = stationID;
             result.StarshipName = "Ant-mk3";
+            result.CargoHoldVolume = 1000;
 
             return result;
         }
