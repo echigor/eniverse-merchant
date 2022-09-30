@@ -21,6 +21,12 @@ namespace Eniverse.ServerModel
         public double YCoordinate { get; set; }
         public double ZCoordinate { get; set; }
 
+        [Column(TypeName = "decimal(8,2)")]
+        public decimal PlanetDuty { get; set; }
+
+        [Column(TypeName = "decimal(8,2)")]
+        public decimal StationDuty { get; set; }
+
         public ICollection<Planet> Planets { get; set; }
     }
 }

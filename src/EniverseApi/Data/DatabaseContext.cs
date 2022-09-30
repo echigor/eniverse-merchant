@@ -16,15 +16,17 @@ namespace EniverseApi.Data
         public DbSet<Station> Stations { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<StationProduct> StationProducts { get; set; }
+        public DbSet<Merchant> Merchants { get; set; }
+        public DbSet<MerchantProduct> MerchantProducts { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
-           // Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<StationProduct>().HasKey(x => new { x.StationID, x.ProductID });
+            modelBuilder.Entity<MerchantProduct>().HasKey(x => new { x.MerchantID, x.ProductID });
         }
     }
 }

@@ -23,6 +23,12 @@ namespace Eniverse.ServerModel
 
         public short CargoHoldVolume { get; set; }
 
+        /// <summary>
+        /// Travel expenses in credits by light year.
+        /// </summary>
+        [Column(TypeName = "decimal(8,2)")]
+        public decimal TravelExpenses { get; set; }
+
         public int CurrentStationID { get; set; }
 
         [ForeignKey(nameof(CurrentStationID))]

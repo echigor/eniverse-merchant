@@ -175,7 +175,7 @@ namespace Eniverse.ViewModels
         {
             Dispatcher.CurrentDispatcher.BeginInvoke(async () =>
             {
-                Station startStation = await _apiService.GetStationByIDAsync(42);
+                Station startStation = await _apiService.GetStationByIDAsync(984);
 
                 _merchant.ChangeStation(startStation);
 

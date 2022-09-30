@@ -66,11 +66,15 @@ namespace Eniverse.DataGenerators
             int starSystemNameIndex = _starSystemCounter % _starSystemNames.Length;
             string starSystemName = _starSystemNames[starSystemNameIndex];
             starSystemName += "-" + (_starSystemCounter % 8999 + 1000);
+            decimal planetDuty = (decimal)(_random.Next(5, 21));
+            decimal stationDuty = (decimal)(_random.Next(1, 6));
             
             result.Name = starSystemName;
             result.XCoordinate = Math.Round(_startingPoints[starSystemNameIndex][0] + (_random.NextDouble() - 0.5D) * 90_000_000D);
             result.YCoordinate = Math.Round(_startingPoints[starSystemNameIndex][1] + (_random.NextDouble() - 0.5D) * 90_000_000D);
             result.ZCoordinate = Math.Round(_startingPoints[starSystemNameIndex][2] + (_random.NextDouble() - 0.5D) * 10_000_000D);
+            result.PlanetDuty = planetDuty;
+            result.StationDuty = stationDuty;
 
             _starSystemCounter++;
 

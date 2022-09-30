@@ -24,27 +24,27 @@ namespace EniverseApi.Controllers
         }
 
         [HttpGet("list-by-station-id")]
-        public IEnumerable<Eniverse.ClientModel.Product> GetProducts(int stationID)
+        public IActionResult GetProducts(int stationID)
         {
             IEnumerable<StationProduct> stationProducts = _database.GetProductsByStationID(stationID);
 
-            return stationProducts.Select(x => new Eniverse.ClientModel.Product()
+            return Ok(stationProducts.Select(x => new Eniverse.ClientModel.Product()
             {
                 ID = x.ProductID,
                 Name = x.Product.Name,
                 AvailableVolume = x.AvailableVolume,
                 Price = x.Price
-            }).ToList();
+            }).ToList());
         }
 
         [HttpGet("names")]
-        public IEnumerable<Eniverse.ClientModel.ProductName> GetNames()
+        public IActionResult GetNames()
         {
-            return _database.GetAllProducts().Select(x => new Eniverse.ClientModel.ProductName()
+            return Ok(_database.GetAllProducts().Select(x => new Eniverse.ClientModel.ProductName()
             {
                 ID = x.ID,
                 Name = x.Name
-            }).ToList();
+            }).ToList());
         }
     }
 }

@@ -24,11 +24,13 @@ namespace Eniverse.DataGenerators
             Merchant result = new Merchant();
 
             int stationID = _random.Next(1, StationGenerator.TotalStations + 1);
+            int travelExpenses = _random.Next(20, 81);
 
             result.Credits = 10_000;
             result.CurrentStationID = stationID;
             result.StarshipName = "Ant-mk3";
             result.CargoHoldVolume = 1000;
+            result.TravelExpenses = travelExpenses;
 
             return result;
         }

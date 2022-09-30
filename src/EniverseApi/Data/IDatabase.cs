@@ -13,5 +13,8 @@ namespace EniverseApi.Data
         IEnumerable<Station> GetStations(string starSystemName, string planetName, int productID, short minProductVolume);
         IEnumerable<StationProduct> GetProductsByStationID(int stationID);
         IEnumerable<Product> GetAllProducts();
+        Merchant GetMerchantByID(int id);
+        IEnumerable<MerchantProduct> GetMerchantProducts(int merchantID);
+        void SaveMerchantChanges(Merchant merchant);
     }
 }

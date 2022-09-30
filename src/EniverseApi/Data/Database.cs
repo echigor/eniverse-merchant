@@ -52,5 +52,26 @@ namespace EniverseApi.Data
             return _databaseContext.Products;
         }
 
+        public Merchant GetMerchantByID(int id)
+        {
+            return _databaseContext
+                   .Merchants
+                   .Include(x => x.Station).Include(x => x.Station.Planet).Include(x => x.Station.Planet.StarSystem)
+                   .FirstOrDefault(x => x.ID == id);
+        }
+
+        public IEnumerable<MerchantProduct> GetMerchantProducts(int merchantID)
+        {
+            return _databaseContext
+                   .MerchantProducts
+                   .Include(x => x.Product)
+                   .Where(x => x.MerchantID == merchantID);
+        }
+
+        public void SaveMerchantChanges(Merchant merchant)
+        {
+            _databaseContext.Merchants.Update(merchant);
+            _databaseContext.SaveChanges();
+        }
     }
 }

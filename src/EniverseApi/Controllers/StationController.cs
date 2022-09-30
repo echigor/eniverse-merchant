@@ -26,14 +26,19 @@ namespace EniverseApi.Controllers
         }
 
         [HttpGet("station-by-id")]
-        public Eniverse.ClientModel.Station GetStationByID(int id)
+        public IActionResult GetStationByID(int id)
         {
             Station station = _database.GetStationByID(id);
+
+            if (station == null)
+            {
+                return NoContent();
+            }
 
             Planet planet = station.Planet;
             StarSystem starSystem = planet.StarSystem;
 
-            return new Eniverse.ClientModel.Station()
+            return Ok(new Eniverse.ClientModel.Station()
             {
                 ID = station.ID,
                 Name = station.Name,
@@ -42,13 +47,13 @@ namespace EniverseApi.Controllers
                 XCoordinate = starSystem.XCoordinate,
                 YCoordinate = starSystem.YCoordinate,
                 ZCoordinate = starSystem.ZCoordinate
-            };
+            });
         }
 
         [HttpGet("filter")]
-        public IEnumerable<Eniverse.ClientModel.Station> GetStations(string starSystemName, string planetName, int productID, short minProductVolume)
+        public IActionResult GetStations(string starSystemName, string planetName, int productID, short minProductVolume)
         {
-            return _database.GetStations(starSystemName, planetName, productID, minProductVolume).Select(x => new Eniverse.ClientModel.Station()
+            return Ok(_database.GetStations(starSystemName, planetName, productID, minProductVolume).Select(x => new Eniverse.ClientModel.Station()
             {
                 ID = x.ID,
                 Name = x.Name,
@@ -57,7 +62,7 @@ namespace EniverseApi.Controllers
                 XCoordinate = x.Planet.StarSystem.XCoordinate,
                 YCoordinate = x.Planet.StarSystem.YCoordinate,
                 ZCoordinate = x.Planet.StarSystem.ZCoordinate
-            }).ToList();
+            }).ToList());
         }
     }
 }
