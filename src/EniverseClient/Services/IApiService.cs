@@ -12,7 +12,11 @@ namespace Eniverse.Services
     {
         Task<Station> GetStationByIDAsync(int id);
         Task<List<Station>> GetStationsAsync(string starSystemName, string planetName, int productID, short minProductVolume);
-        Task<List<Product>> GetProductsByStationIDAsync(int id);
+        Task<List<Product>> GetProductsByStationIDAsync(int stationID);
         Task<List<ProductName>> GetProductNamesAsync();
+        Task<Merchant> GetMerchantByIDAsync(int id);
+        Task<List<Product>> GetMerchantProductsByMerchantIDAsync(int merchantID);
+        Task<decimal> GetTravelCostAsync(int merchantID, int destinationStationID);
+        Task<object> ChangeStationAsync(int merchantID, int destinationStationID);
     }
 }

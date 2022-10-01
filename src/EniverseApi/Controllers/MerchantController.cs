@@ -107,9 +107,9 @@ namespace EniverseApi.Controllers
             double deltaY = destinationStarSystem.YCoordinate - merchantStarSystem.YCoordinate;
             double deltaZ = destinationStarSystem.ZCoordinate - merchantStarSystem.ZCoordinate;
 
-            double distance = Math.Round(Math.Sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ) / 9_460_800D, 4);
+            decimal distance = Math.Round((decimal)Math.Sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ) / 9_460_800M, 4);
 
-            return merchant.TravelExpenses * (decimal)distance
+            return merchant.TravelExpenses * distance
                    + destinationStarSystem.PlanetDuty * (merchant.Station.PlanetID != destinationStation.PlanetID ? 1 : 0)
                    + destinationStarSystem.StationDuty * (merchant.Station.ID != destinationStation.ID ? 1 : 0);
         }

@@ -19,6 +19,7 @@ namespace Eniverse.Services
         private readonly HttpClient _client;
         private const string StationController = "station";
         private const string ProductController = "product";
+        private const string MerchantController = "merchant";
 
         public ApiService(string apiEndpoint)
         {
@@ -46,6 +47,7 @@ namespace Eniverse.Services
             };
 
             Uri uri = EncodeUriWithParameters(StationController, "station-by-id", parameters);
+
             return RequestGet<Station>(uri);
         }
 
@@ -60,6 +62,7 @@ namespace Eniverse.Services
             };
 
             Uri uri = EncodeUriWithParameters(StationController, "filter", parameters);
+
             return RequestGet<List<Station>>(uri);
         }
 
@@ -71,13 +74,65 @@ namespace Eniverse.Services
             };
 
             Uri uri = EncodeUriWithParameters(ProductController, "list-by-station-id", parameters);
+
             return RequestGet<List<Product>>(uri);
         }
 
         public Task<List<ProductName>> GetProductNamesAsync()
         {
             Uri uri = EncodeUriWithParameters(ProductController, "names", null);
+
             return RequestGet<List<ProductName>>(uri);
+        }
+
+        public Task<Merchant> GetMerchantByIDAsync(int id)
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>()
+            {
+                { nameof(id), id }
+            };
+
+            Uri uri = EncodeUriWithParameters(MerchantController, string.Empty, parameters);
+
+            return RequestGet<Merchant>(uri);
+        }
+
+        public Task<List<Product>> GetMerchantProductsByMerchantIDAsync(int merchantID)
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>()
+            {
+                { nameof(merchantID), merchantID }
+            };
+
+            Uri uri = EncodeUriWithParameters(MerchantController, "products", parameters);
+
+            return RequestGet<List<Product>>(uri);
+        }
+
+        public Task<decimal> GetTravelCostAsync(int merchantID, int destinationStationID)
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>()
+            {
+                { nameof(merchantID), merchantID },
+                { nameof(destinationStationID), destinationStationID }
+            };
+
+            Uri uri = EncodeUriWithParameters(MerchantController, "travel-cost", parameters);
+
+            return RequestGet<decimal>(uri);
+        }
+
+        public Task<object> ChangeStationAsync(int merchantID, int destinationStationID)
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>()
+            {
+                { nameof(merchantID), merchantID },
+                { nameof(destinationStationID), destinationStationID }
+            };
+
+            Uri uri = EncodeUriWithParameters(MerchantController, "change-station", parameters);
+
+            return RequestPatch<object>(uri);
         }
 
         private async Task<TResult> RequestGet<TResult>(Uri uri) where TResult: new()
@@ -85,6 +140,29 @@ namespace Eniverse.Services
             try
             {
                 HttpResponseMessage response = await _client.GetAsync(uri);
+                response.EnsureSuccessStatusCode();
+                string responseBody = await response.Content.ReadAsStringAsync();
+
+                TResult result = JsonConvert.DeserializeObject<TResult>(responseBody);
+
+                return result;
+            }
+            catch (Exception exception) when (exception is HttpRequestException || exception is JsonException)
+            {
+                Debug.WriteLine("\nException caught!");
+                Debug.WriteLine($"Message: {exception.Message}");
+            }
+
+            return new TResult();
+        }
+
+        private async Task<TResult> RequestPatch<TResult>(Uri uri) where TResult : new()
+        {
+            try
+            {
+                HttpContent httpContent = new StringContent(string.Empty);
+
+                HttpResponseMessage response = await _client.PatchAsync(uri, httpContent);
                 response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();
 
@@ -117,5 +195,6 @@ namespace Eniverse.Services
 
             return new Uri(result, UriKind.Relative);
         }
+
     }
 }

@@ -60,13 +60,13 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="8" HorizontalAlignment="Left" VerticalAlignment="Center">
                     <Label Content="Грузовой отсек:"/>
-                    <TextBlock Text="{Binding CurrentStarshipStorage}" Style="{StaticResource CustomTextBlockStyle}" Margin="4"/>
+                    <TextBlock Text="{Binding CurrentCargoHoldVolume}" Style="{StaticResource CustomTextBlockStyle}" Margin="4"/>
                     <Label Content="/"/>
-                    <TextBlock Text="{Binding StarshipStorage}" Style="{StaticResource CustomTextBlockStyle}" Margin="4"/>
+                    <TextBlock Text="{Binding CargoHoldVolume}" Style="{StaticResource CustomTextBlockStyle}" Margin="4"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="8" HorizontalAlignment="Left" VerticalAlignment="Bottom">
-                    <Label Content="Топливный бак:"/>
-                    <TextBlock Text="{Binding FuelTank}" Style="{StaticResource CustomTextBlockStyle}"/>
+                    <Label Content="Дорожные расходы:"/>
+                    <TextBlock Text="{Binding TravelExpenses}" Style="{StaticResource CustomTextBlockStyle}"/>
                 </StackPanel>
             </StackPanel>
         </Border>
@@ -209,8 +209,8 @@
 
                     <StackPanel Orientation="Horizontal"
                                 VerticalAlignment="Top" HorizontalAlignment="Left" Margin="16 36 16 16">
-                        <Label Content="Расход топлива:"/>
-                        <TextBlock Text="{Binding FuelCost}" Style="{StaticResource CustomTextBlockStyle}"/>
+                        <Label Content="Цена:"/>
+                        <TextBlock Text="{Binding TravelCost}" Style="{StaticResource CustomTextBlockStyle}"/>
                     </StackPanel>
                     
                     <Button Content="В путь!"

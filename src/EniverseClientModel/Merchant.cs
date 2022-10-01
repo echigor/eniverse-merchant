@@ -30,6 +30,13 @@
             set { _cargoHoldVolume = value; }
         }
 
+        private decimal _travelExpenses;
+        public decimal TravelExpenses
+        {
+            get { return _travelExpenses; }
+            set { _travelExpenses = value; }
+        }
+
         private int _currentStationID;
         public int CurrentStationID
         {
