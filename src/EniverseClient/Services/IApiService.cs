@@ -18,6 +18,7 @@ namespace Eniverse.Services
         Task<List<Product>> GetMerchantProductsByMerchantIDAsync(int merchantID);
         Task<decimal> GetTravelCostAsync(int merchantID, int destinationStationID);
         Task<object> ChangeStationAsync(int merchantID, int destinationStationID);
-        Task<decimal> GetBuySellPriceAsync(int marketStationID, string tradedProductName, short tradedVolume);
+        Task<object> BuyProductAsync(int merchantID, int productID, short tradedVolume);
+        Task<object> SellProductAsync(int merchantID, int productID, short tradedVolume);
     }
 }

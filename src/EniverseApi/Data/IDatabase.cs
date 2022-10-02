@@ -16,7 +16,7 @@ namespace EniverseApi.Data
         IEnumerable<Product> GetAllProducts();
         Merchant GetMerchantByID(int id);
         IEnumerable<MerchantProduct> GetMerchantProducts(int merchantID);
-        MerchantProduct GetMerchantProduct(int productID);
+        MerchantProduct GetMerchantProduct(int merchantID, int productID);
         void SaveMerchantChanges(Merchant merchant);
         void SaveMerchantProductsBuyChanges(MerchantProduct merchantProduct, bool isExists);
         void SaveMerchantProductsSellChanges(MerchantProduct merchantProduct, bool isProductSoldOut);

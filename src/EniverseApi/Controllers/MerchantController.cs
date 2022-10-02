@@ -189,7 +189,7 @@ namespace EniverseApi.Controllers
                 return NoContent();
             }
 
-            MerchantProduct merchantProduct = _database.GetMerchantProduct(productID);
+            MerchantProduct merchantProduct = _database.GetMerchantProduct(merchantID, productID);
 
             if (merchantProduct == null)
             {

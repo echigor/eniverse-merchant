@@ -135,18 +135,32 @@ namespace Eniverse.Services
             return RequestPatch<object>(uri);
         }
 
-        public Task<decimal> GetBuySellPriceAsync(int marketStationID, string tradedProductName, short tradedVolume)
+        public Task<object> BuyProductAsync(int merchantID, int productID, short tradedVolume)
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>()
             {
-                { nameof(marketStationID), marketStationID },
-                { nameof(tradedProductName), tradedProductName },
+                { nameof(merchantID), merchantID },
+                { nameof(productID), productID },
                 { nameof(tradedVolume), tradedVolume }
             };
 
-            Uri uri = EncodeUriWithParameters(MerchantController, "buy-sell-price", parameters);
+            Uri uri = EncodeUriWithParameters(MerchantController, "buy-product", parameters);
 
-            return RequestGet<decimal>(uri);
+            return RequestPost<object>(uri);
+        }
+
+        public Task<object> SellProductAsync(int merchantID, int productID, short tradedVolume)
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>()
+            {
+                { nameof(merchantID), merchantID },
+                { nameof(productID), productID },
+                { nameof(tradedVolume), tradedVolume }
+            };
+
+            Uri uri = EncodeUriWithParameters(MerchantController, "sell-product", parameters);
+
+            return RequestPost<object>(uri);
         }
 
         private async Task<TResult> RequestGet<TResult>(Uri uri) where TResult: new()
@@ -177,6 +191,29 @@ namespace Eniverse.Services
                 HttpContent httpContent = new StringContent(string.Empty);
 
                 HttpResponseMessage response = await _client.PatchAsync(uri, httpContent);
+                response.EnsureSuccessStatusCode();
+                string responseBody = await response.Content.ReadAsStringAsync();
+
+                TResult result = JsonConvert.DeserializeObject<TResult>(responseBody);
+
+                return result;
+            }
+            catch (Exception exception) when (exception is HttpRequestException || exception is JsonException)
+            {
+                Debug.WriteLine("\nException caught!");
+                Debug.WriteLine($"Message: {exception.Message}");
+            }
+
+            return new TResult();
+        }
+
+        private async Task<TResult> RequestPost<TResult>(Uri uri) where TResult : new()
+        {
+            try
+            {
+                HttpContent httpContent = new StringContent(string.Empty);
+
+                HttpResponseMessage response = await _client.PostAsync(uri, httpContent);
                 response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();
 

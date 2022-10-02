@@ -154,23 +154,10 @@ namespace Eniverse.ViewModels
             set { SetProperty(ref _totalSellPrice, value); }
         }
 
-
         private DelegateCommand _travelToStationCommand;
         public DelegateCommand TravelToStationCommand
         {
             get { return _travelToStationCommand; }
-        }
-
-        private DelegateCommand _calculateSellPriceCommand;
-        public DelegateCommand CalculateSellPriceCommand
-        {
-            get { return _calculateSellPriceCommand; }
-        }
-
-        private DelegateCommand _calculateBuyPriceCommand;
-        public DelegateCommand CalculateBuyPriceCommand
-        {
-            get { return _calculateBuyPriceCommand; }
         }
 
         private DelegateCommand _setMaximumBuyableVolumeCommand;
@@ -189,6 +176,18 @@ namespace Eniverse.ViewModels
         public DelegateCommand ApplyFilterCommand
         {
             get { return _applyFilterCommand; }
+        }
+
+        private DelegateCommand _buyProductsCommand;
+        public DelegateCommand BuyProductsCommand
+        {
+            get { return _buyProductsCommand; }
+        }
+
+        private DelegateCommand _sellProductsCommand;
+        public DelegateCommand SellProductsCommand
+        {
+            get { return _sellProductsCommand; }
         }
 
         public MainWindowViewModel(IApiService apiService)
@@ -211,6 +210,18 @@ namespace Eniverse.ViewModels
 
             _setMaximumSellableVolumeCommand = new DelegateCommand(() => SellableVolume = _maximumSellableVolume);
             _setMaximumBuyableVolumeCommand = new DelegateCommand(() => BuyableVolume = _maximumBuyableVolume);
+
+            _buyProductsCommand = new DelegateCommand(async () => await BuyProductsAsync());
+                                                                                                 //() => _merchant?.CurrentStation.ID != _observableStation?.ID
+                                                                                                 //&& _selectedProductInMarket != null
+                                                                                                 //&& _merchant?.Credits < _totalBuyPrice
+                                                                                                 //&& _maximumBuyableVolume < _buyableVolume
+                                                                                                 //&& _selectedProductInMarket.Volume < _buyableVolume
+            _sellProductsCommand = new DelegateCommand(async () => await SellProductsAsync());
+                                                                                                    //() => _merchant?.CurrentStation.ID != _observableStation?.ID
+                                                                                                    //&& _selectedProductInCargoHold != null
+                                                                                                    //&& _maximumSellableVolume < _sellableVolume
+                                                                                                    //&& _selectedProductInCargoHold.Volume < _sellableVolume
 
             Initialize();
         }
@@ -300,6 +311,49 @@ namespace Eniverse.ViewModels
             List<Product> merchantProducts = await _apiService.GetMerchantProductsByMerchantIDAsync(merchant.ID);
 
             _merchant.Update(merchant, startStation, merchantProducts);
+        }
+
+        private async Task UpdateObservableStation()
+        {
+            Station observableStation = await _apiService.GetStationByIDAsync(_observableStation.ID);
+
+            ObservableStation = new StationViewModel(observableStation, _merchant.CurrentStation);
+        }
+
+        private async Task BuyProductsAsync()
+        {
+            if (_merchant?.CurrentStation.ID != _observableStation?.ID 
+                && _selectedProductInMarket != null
+                && _merchant?.Credits < _totalBuyPrice 
+                && _maximumBuyableVolume < _buyableVolume
+                && _selectedProductInMarket.Volume < _buyableVolume)
+            {
+                return;
+            }
+
+            await _apiService.BuyProductAsync(Merchant.ID, _selectedProductInMarket.ID, BuyableVolume);
+
+            await UpdateMerchantAsync();
+            await UpdateObservableStation();
+        }
+
+        private async Task SellProductsAsync()
+        {
+            UpdateSameProduct();
+
+            if (_merchant.CurrentStation?.ID != _observableStation?.ID
+                && _selectedProductInCargoHold != null
+                && _maximumSellableVolume < _sellableVolume
+                && _selectedProductInCargoHold.Volume < _sellableVolume
+                && _sameProductInMarket != null)
+            {
+                return;
+            }
+
+            await _apiService.SellProductAsync(Merchant.ID, _selectedProductInCargoHold.ID, SellableVolume);
+
+            await UpdateMerchantAsync();
+            await UpdateObservableStation();
         }
 
         private void UpdateSameProduct()

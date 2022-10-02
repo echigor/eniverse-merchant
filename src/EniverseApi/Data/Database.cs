@@ -75,11 +75,11 @@ namespace EniverseApi.Data
                    .Where(x => x.MerchantID == merchantID);
         }
 
-        public MerchantProduct GetMerchantProduct(int productID)
+        public MerchantProduct GetMerchantProduct(int merchantID, int productID)
         {
             return _databaseContext
                    .MerchantProducts
-                   .FirstOrDefault(x => x.ProductID == productID);
+                   .FirstOrDefault(x => x.ProductID == productID && x.MerchantID == merchantID);
         }
 
         public void SaveMerchantChanges(Merchant merchant)
