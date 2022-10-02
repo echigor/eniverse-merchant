@@ -19,9 +19,10 @@ namespace Eniverse.ViewModels
 {
     public class MainWindowViewModel : BindableBase
     {
-        const short MaximumStorageVolume = 32_000;
+        const short MaximumStorageVolume = short.MaxValue;
 
         private readonly IApiService _apiService;
+        private ProductViewModel _sameProductInMarket;
 
         private string _title;
         public string Title
@@ -66,10 +67,14 @@ namespace Eniverse.ViewModels
         public ProductViewModel SelectedProductInMarket
         {
             get { return _selectedProductInMarket; }
-            set
-            {
-                SetProperty(ref _selectedProductInMarket, value);
-            }
+            set { SetProperty(ref _selectedProductInMarket, value, HandleSelectedProductInMarketChanged); }
+        }
+
+        private ProductViewModel _selectedProductInCargoHold;
+        public ProductViewModel SelectedProductInCargoHold
+        {
+            get { return _selectedProductInCargoHold; }
+            set { SetProperty(ref _selectedProductInCargoHold, value, HandleSelectedProductInCargoHoldChanged); }
         }
 
         private string _starSystemFilter;
@@ -107,18 +112,18 @@ namespace Eniverse.ViewModels
             set { SetProperty(ref _travelCost, value); }
         }
 
-        private short _tradedVolume;
-        public short TradedVolume
+        private short _buyableVolume;
+        public short BuyableVolume
         {
-            get { return _tradedVolume; }
-            set { SetProperty(ref _tradedVolume, value); }
+            get { return _buyableVolume; }
+            set { SetProperty(ref _buyableVolume, value, UpdateTotalBuyPrice); }
         }
 
         private short _sellableVolume;
         public short SellableVolume
         {
             get { return _sellableVolume; }
-            set { SetProperty(ref _sellableVolume, value); }
+            set { SetProperty(ref _sellableVolume, value, UpdateTotalSellPrice); }
         }
 
         private short _maximumSellableVolume;
@@ -128,14 +133,27 @@ namespace Eniverse.ViewModels
             set { SetProperty(ref _maximumSellableVolume, value); }
         }
 
-        private ProductViewModel _selectedProductInCargoHold;
-        public ProductViewModel SelectedProductInCargoHold
+        private short _maximumBuyableVolume;
+        public short MaximumBuyableVolume
         {
-            get { return _selectedProductInCargoHold; }
-            set { SetProperty(ref _selectedProductInCargoHold, value, HandleSelectedProductInCargoHoldChanged); }
+            get { return _maximumBuyableVolume; }
+            set { SetProperty(ref _maximumBuyableVolume, value); }
         }
 
-        private ProductViewModel _sameProductInMarket;
+        private decimal _totalBuyPrice;
+        public decimal TotalBuyPrice
+        {
+            get { return _totalBuyPrice; }
+            set { SetProperty(ref _totalBuyPrice, value); }
+        }
+
+        private decimal _totalSellPrice;
+        public decimal TotalSellPrice
+        {
+            get { return _totalSellPrice; }
+            set { SetProperty(ref _totalSellPrice, value); }
+        }
+
 
         private DelegateCommand _travelToStationCommand;
         public DelegateCommand TravelToStationCommand
@@ -143,28 +161,28 @@ namespace Eniverse.ViewModels
             get { return _travelToStationCommand; }
         }
 
-        private DelegateCommand _setZeroTradedVolume;
-        public DelegateCommand SetZeroTradedVolume
+        private DelegateCommand _calculateSellPriceCommand;
+        public DelegateCommand CalculateSellPriceCommand
         {
-            get { return _setZeroTradedVolume; }
+            get { return _calculateSellPriceCommand; }
         }
 
-        private DelegateCommand _setZeroSellableVolume;
-        public DelegateCommand SetZeroSellableVolume
+        private DelegateCommand _calculateBuyPriceCommand;
+        public DelegateCommand CalculateBuyPriceCommand
         {
-            get { return _setZeroSellableVolume; }
+            get { return _calculateBuyPriceCommand; }
         }
 
-        private DelegateCommand _setMaximumBuyableVolume;
-        public DelegateCommand SetMaximumBuyableVolume
+        private DelegateCommand _setMaximumBuyableVolumeCommand;
+        public DelegateCommand SetMaximumBuyableVolumeCommand
         {
-            get { return _setMaximumBuyableVolume; }
+            get { return _setMaximumBuyableVolumeCommand; }
         }
 
-        private DelegateCommand _setMaximumSellableVolume;
-        public DelegateCommand SetMaximumSellableVolume
+        private DelegateCommand _setMaximumSellableVolumeCommand;
+        public DelegateCommand SetMaximumSellableVolumeCommand
         {
-            get { return _setMaximumSellableVolume; }
+            get { return _setMaximumSellableVolumeCommand; }
         }
 
         private DelegateCommand _applyFilterCommand;
@@ -191,10 +209,8 @@ namespace Eniverse.ViewModels
                     .ObservesProperty(() => TravelCost)
                     .ObservesProperty(() => Merchant.Credits);
 
-            _setZeroTradedVolume = new DelegateCommand(() => TradedVolume = 0);
-            _setZeroTradedVolume = new DelegateCommand(() => SellableVolume = 0);
-            _setMaximumBuyableVolume = new DelegateCommand(() => TradedVolume = _merchant.AvailableCargoHoldVolume);
-            _setMaximumSellableVolume = new DelegateCommand(() => SellableVolume = MaximumSellableVolume);
+            _setMaximumSellableVolumeCommand = new DelegateCommand(() => SellableVolume = _maximumSellableVolume);
+            _setMaximumBuyableVolumeCommand = new DelegateCommand(() => BuyableVolume = _maximumBuyableVolume);
 
             Initialize();
         }
@@ -234,7 +250,11 @@ namespace Eniverse.ViewModels
 
                 TravelCost = await _apiService.GetTravelCostAsync(_merchant.ID, _observableStation.ID);
                 TravelDistance = _observableStation.Distance;
+
+                UpdateSameProduct();
+                UpdateMaximumBuyableVolume();
             });
+
         }
 
         private async Task ApplyFilterAsync()
@@ -282,29 +302,77 @@ namespace Eniverse.ViewModels
             _merchant.Update(merchant, startStation, merchantProducts);
         }
 
-        private void HandleSelectedProductInCargoHoldChanged()
+        private void UpdateSameProduct()
         {
             MaximumSellableVolume = 0;
 
-            //Необходимо реализовать повторное выделение товара в списке
             if (_observableStation != null && _selectedProductInCargoHold != null)
             {
-                _sameProductInMarket = _observableStation.Products.First(x => x.Name == _selectedProductInCargoHold.Name);
+                _sameProductInMarket = _observableStation.Products.FirstOrDefault(x => x.Name == _selectedProductInCargoHold.Name);
 
-                if (_sameProductInMarket != null)
+                if (_sameProductInMarket == null)
                 {
-                    short availableVolumeInMarket = (short)(MaximumStorageVolume - _sameProductInMarket.Volume);
+                    return;
+                }
 
-                    if (_selectedProductInCargoHold.Volume <= availableVolumeInMarket)
-                    {
-                        MaximumSellableVolume = _selectedProductInCargoHold.Volume;
-                    }
-                    else
-                    {
-                        MaximumSellableVolume = availableVolumeInMarket;
-                    }
+                short availableVolumeInMarket = (short)(MaximumStorageVolume - _sameProductInMarket.Volume);
+
+                if (_selectedProductInCargoHold.Volume <= availableVolumeInMarket)
+                {
+                    MaximumSellableVolume = _selectedProductInCargoHold.Volume;
+                }
+                else
+                {
+                    MaximumSellableVolume = availableVolumeInMarket;
                 }
             }
+        }
+
+        private void UpdateMaximumBuyableVolume()
+        {
+            MaximumBuyableVolume = 0;
+
+            //Необходимо реализовать повторное выделение товара в списке
+            if (_observableStation != null && _selectedProductInMarket != null)
+            {
+                if (_selectedProductInMarket.Volume <= _merchant.AvailableCargoHoldVolume)
+                {
+                    MaximumBuyableVolume = _selectedProductInMarket.Volume;
+                }
+                else
+                {
+                    MaximumBuyableVolume = _merchant.AvailableCargoHoldVolume;
+                }
+            }
+
+        }
+
+        private void UpdateTotalBuyPrice()
+        {
+            if (_observableStation != null && _selectedProductInMarket != null)
+            {
+                TotalBuyPrice = _selectedProductInMarket.Price * _buyableVolume;
+            }
+        }
+
+        private void UpdateTotalSellPrice()
+        {
+            if (_sameProductInMarket != null && _observableStation != null && _selectedProductInCargoHold != null)
+            {
+                TotalSellPrice = _sameProductInMarket.Price * _sellableVolume;
+            }
+        }
+
+        private void HandleSelectedProductInMarketChanged()
+        {
+            UpdateMaximumBuyableVolume();
+            UpdateTotalBuyPrice();
+        }
+
+        private void HandleSelectedProductInCargoHoldChanged()
+        {
+            UpdateSameProduct();
+            UpdateTotalSellPrice();
         }
     }
 }

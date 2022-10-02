@@ -47,6 +47,13 @@ namespace EniverseApi.Data
                    .Where(x => x.StationID == stationID);
         }
 
+        public StationProduct GetStationProduct(int stationID, int productID)
+        {
+            return _databaseContext
+                   .StationProducts
+                   .FirstOrDefault(x => x.StationID == stationID && x.ProductID == productID);
+        }
+
         public IEnumerable<Product> GetAllProducts()
         {
             return _databaseContext.Products;
@@ -68,9 +75,56 @@ namespace EniverseApi.Data
                    .Where(x => x.MerchantID == merchantID);
         }
 
+        public MerchantProduct GetMerchantProduct(int productID)
+        {
+            return _databaseContext
+                   .MerchantProducts
+                   .FirstOrDefault(x => x.ProductID == productID);
+        }
+
         public void SaveMerchantChanges(Merchant merchant)
         {
             _databaseContext.Merchants.Update(merchant);
+            _databaseContext.SaveChanges();
+        }
+
+        public void SaveStationChanges(Station station)
+        {
+            _databaseContext.Stations.Update(station);
+            _databaseContext.SaveChanges();
+        }
+
+        public void SaveMerchantProductsBuyChanges(MerchantProduct merchantProduct, bool isExists)
+        {
+            if (isExists)
+            {
+                _databaseContext.MerchantProducts.Update(merchantProduct);
+            }
+            else
+            {
+                _databaseContext.MerchantProducts.Add(merchantProduct);
+            }
+
+            _databaseContext.SaveChanges();
+        }
+
+        public void SaveMerchantProductsSellChanges(MerchantProduct merchantProduct, bool isProductSoldOut)
+        {
+            if (isProductSoldOut)
+            {
+                _databaseContext.MerchantProducts.Remove(merchantProduct);
+            }
+            else
+            {
+                _databaseContext.MerchantProducts.Update(merchantProduct);
+            }
+
+            _databaseContext.SaveChanges();
+        }
+
+        public void SaveStationProductsChanges(StationProduct stationProduct)
+        {
+            _databaseContext.StationProducts.Update(stationProduct);
             _databaseContext.SaveChanges();
         }
     }

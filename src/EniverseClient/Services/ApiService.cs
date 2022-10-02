@@ -135,6 +135,20 @@ namespace Eniverse.Services
             return RequestPatch<object>(uri);
         }
 
+        public Task<decimal> GetBuySellPriceAsync(int marketStationID, string tradedProductName, short tradedVolume)
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>()
+            {
+                { nameof(marketStationID), marketStationID },
+                { nameof(tradedProductName), tradedProductName },
+                { nameof(tradedVolume), tradedVolume }
+            };
+
+            Uri uri = EncodeUriWithParameters(MerchantController, "buy-sell-price", parameters);
+
+            return RequestGet<decimal>(uri);
+        }
+
         private async Task<TResult> RequestGet<TResult>(Uri uri) where TResult: new()
         {
             try
