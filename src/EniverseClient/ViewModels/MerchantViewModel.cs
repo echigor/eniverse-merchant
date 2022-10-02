@@ -39,20 +39,20 @@ namespace Eniverse.ViewModels
             get { return _merchant.TravelExpenses; }
         }
 
-        public int CargoHoldVolume
+        public short CargoHoldVolume
         {
             get { return _merchant.CargoHoldVolume; }
         }
 
-        private int _currentCargoHoldVolume;
-        public int CurrentCargoHoldVolume
+        private short _currentCargoHoldVolume;
+        public short CurrentCargoHoldVolume
         {
             get { return _currentCargoHoldVolume; }
             set { SetProperty(ref _currentCargoHoldVolume, value); }
         }
 
-        private int _availableCargoHoldVolume;
-        public int AvailableCargoHoldVolume
+        private short _availableCargoHoldVolume;
+        public short AvailableCargoHoldVolume
         {
             get { return _availableCargoHoldVolume; }
             set { SetProperty(ref _availableCargoHoldVolume, value); }
@@ -90,8 +90,9 @@ namespace Eniverse.ViewModels
                 CurrentCargoHoldVolume += product.Volume;
             }
 
-            AvailableCargoHoldVolume = CargoHoldVolume - _currentCargoHoldVolume; 
+            AvailableCargoHoldVolume = (short)(CargoHoldVolume - _currentCargoHoldVolume); 
         }
+
 
         public void UpdateProducts(IEnumerable<Product> merchantProducts)
         {
@@ -105,7 +106,7 @@ namespace Eniverse.ViewModels
                     _products.Add(productViewModel);
                 }
 
-                CurrentCargoHoldVolume = _products.Count;
+                CurrentCargoHoldVolume = (short)_products.Count;
 
                 CountCurrentCargoHoldVolume();
             }

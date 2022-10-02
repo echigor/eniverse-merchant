@@ -19,6 +19,8 @@ namespace Eniverse.ViewModels
 {
     public class MainWindowViewModel : BindableBase
     {
+        const short MaximumStorageVolume = 32_000;
+
         private readonly IApiService _apiService;
 
         private string _title;
@@ -70,11 +72,6 @@ namespace Eniverse.ViewModels
             }
         }
 
-        public bool IsSameSystem
-        {
-            get { return _observableStation?.StarSystemName == _merchant.CurrentStation.StarSystemName; }
-        }
-
         private string _starSystemFilter;
         public string StarSystemFilter
         {
@@ -110,12 +107,35 @@ namespace Eniverse.ViewModels
             set { SetProperty(ref _travelCost, value); }
         }
 
-        private int _tradedVolume;
-        public int TradedVolume
+        private short _tradedVolume;
+        public short TradedVolume
         {
             get { return _tradedVolume; }
             set { SetProperty(ref _tradedVolume, value); }
         }
+
+        private short _sellableVolume;
+        public short SellableVolume
+        {
+            get { return _sellableVolume; }
+            set { SetProperty(ref _sellableVolume, value); }
+        }
+
+        private short _maximumSellableVolume;
+        public short MaximumSellableVolume
+        {
+            get { return _maximumSellableVolume; }
+            set { SetProperty(ref _maximumSellableVolume, value); }
+        }
+
+        private ProductViewModel _selectedProductInCargoHold;
+        public ProductViewModel SelectedProductInCargoHold
+        {
+            get { return _selectedProductInCargoHold; }
+            set { SetProperty(ref _selectedProductInCargoHold, value, HandleSelectedProductInCargoHoldChanged); }
+        }
+
+        private ProductViewModel _sameProductInMarket;
 
         private DelegateCommand _travelToStationCommand;
         public DelegateCommand TravelToStationCommand
@@ -127,6 +147,12 @@ namespace Eniverse.ViewModels
         public DelegateCommand SetZeroTradedVolume
         {
             get { return _setZeroTradedVolume; }
+        }
+
+        private DelegateCommand _setZeroSellableVolume;
+        public DelegateCommand SetZeroSellableVolume
+        {
+            get { return _setZeroSellableVolume; }
         }
 
         private DelegateCommand _setMaximumBuyableVolume;
@@ -166,8 +192,9 @@ namespace Eniverse.ViewModels
                     .ObservesProperty(() => Merchant.Credits);
 
             _setZeroTradedVolume = new DelegateCommand(() => TradedVolume = 0);
+            _setZeroTradedVolume = new DelegateCommand(() => SellableVolume = 0);
             _setMaximumBuyableVolume = new DelegateCommand(() => TradedVolume = _merchant.AvailableCargoHoldVolume);
-           // _setMaximumSellableVolume = new DelegateCommand(() => TradedVolume = _merchant.SelectedProductInStorage.Volume);
+            _setMaximumSellableVolume = new DelegateCommand(() => SellableVolume = MaximumSellableVolume);
 
             Initialize();
         }
@@ -253,6 +280,31 @@ namespace Eniverse.ViewModels
             List<Product> merchantProducts = await _apiService.GetMerchantProductsByMerchantIDAsync(merchant.ID);
 
             _merchant.Update(merchant, startStation, merchantProducts);
+        }
+
+        private void HandleSelectedProductInCargoHoldChanged()
+        {
+            MaximumSellableVolume = 0;
+
+            //Необходимо реализовать повторное выделение товара в списке
+            if (_observableStation != null && _selectedProductInCargoHold != null)
+            {
+                _sameProductInMarket = _observableStation.Products.First(x => x.Name == _selectedProductInCargoHold.Name);
+
+                if (_sameProductInMarket != null)
+                {
+                    short availableVolumeInMarket = (short)(MaximumStorageVolume - _sameProductInMarket.Volume);
+
+                    if (_selectedProductInCargoHold.Volume <= availableVolumeInMarket)
+                    {
+                        MaximumSellableVolume = _selectedProductInCargoHold.Volume;
+                    }
+                    else
+                    {
+                        MaximumSellableVolume = availableVolumeInMarket;
+                    }
+                }
+            }
         }
     }
 }
