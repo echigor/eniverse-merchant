@@ -24,7 +24,7 @@ namespace Eniverse.DataGenerators
             Merchant result = new Merchant();
 
             int stationID = _random.Next(1, StationGenerator.TotalStations + 1);
-            int travelExpenses = _random.Next(20, 81);
+            int travelExpenses = _random.Next(200, 301);
 
             result.Credits = 10_000;
             result.CurrentStationID = stationID;

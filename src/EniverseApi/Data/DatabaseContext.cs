@@ -26,6 +26,7 @@ namespace EniverseApi.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<StationProduct>().HasKey(x => new { x.StationID, x.ProductID });
+            modelBuilder.Entity<Merchant>().Property(x => x.Credits).HasPrecision(15, 2);
             modelBuilder.Entity<MerchantProduct>().HasKey(x => new { x.MerchantID, x.ProductID });
         }
     }

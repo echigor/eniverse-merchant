@@ -14,7 +14,7 @@ namespace Eniverse.ServerModel
         [Key]
         public int ID { get; set; }
 
-        [Column(TypeName = "decimal(8,2)")]
+        [Column(TypeName = "decimal(15,2)")]
         public decimal Credits { get; set; }
 
         [MaxLength(20)]

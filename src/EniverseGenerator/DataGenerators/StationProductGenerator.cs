@@ -62,7 +62,7 @@ namespace Eniverse.DataGenerators
                 stationProduct.StationID = stationID;
                 stationProduct.ProductID = randomProductIndex + 1;
                 stationProduct.AvailableVolume = (short)_random.Next(1_000, 10_001);
-                stationProduct.Price = Math.Round(_basePrices[randomProductIndex] * (decimal)(_random.NextDouble() * 1.5D + 0.25D), 2);
+                stationProduct.Price = Math.Round(_basePrices[randomProductIndex] * (decimal)(_random.NextDouble() * 1D + 0.5D), 2);
 
                 result.Add(stationProduct);
             }
