@@ -10,8 +10,8 @@ namespace Eniverse.DataGenerators
 {
     public class StarSystemGenerator
     {
-        //public const int TotalStars = 53_141;
-        public const int TotalStars = 531;
+        public const int TotalStars = 53_141;
+        //public const int TotalStars = 531;
         //79
         private string[] _starSystemNames = new string[]
         { 
@@ -66,8 +66,8 @@ namespace Eniverse.DataGenerators
             int starSystemNameIndex = _starSystemCounter % _starSystemNames.Length;
             string starSystemName = _starSystemNames[starSystemNameIndex];
             starSystemName += "-" + (_starSystemCounter % 8999 + 1000);
-            decimal planetDuty = (decimal)(_random.Next(5, 21));
-            decimal stationDuty = (decimal)(_random.Next(1, 6));
+            decimal planetDuty = (decimal)(_random.Next(50, 101));
+            decimal stationDuty = (decimal)(_random.Next(20, 51));
             
             result.Name = starSystemName;
             result.XCoordinate = Math.Round(_startingPoints[starSystemNameIndex][0] + (_random.NextDouble() - 0.5D) * 90_000_000D);

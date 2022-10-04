@@ -163,6 +163,19 @@
                                 Grid.Row="0" Margin="16" VerticalAlignment="Top" HorizontalAlignment="Right"
                                 Command="{Binding SetMaximumSellableVolumeCommand}"/>
 
+                <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                    <Button Content="-" Width="32"
+                            Grid.Row="0" Margin="8" 
+                            Command="{Binding ReduceSellableVolumeCommand}"/>
+                    <Slider Value="{Binding SellableVolume}" Maximum="{Binding MaximumSellableVolume}"
+                            Minimum="0"
+                            Grid.Row="0" 
+                            VerticalAlignment="Center" Margin="4" Width="168"/>
+                    <Button Content="+" Width="32"
+                            Grid.Row="0" Margin="8"
+                            Command="{Binding IncreaseSellableVolumeCommand}"/>
+                </StackPanel>
+
                 <StackPanel Grid.Row="1" Orientation="Horizontal"
                                     VerticalAlignment="Top" HorizontalAlignment="Left" Margin="16">
                     <Label Content="Прибыль от продажи:"/>
@@ -196,6 +209,19 @@
                 <Button Content="Максимум"
                         Grid.Row="0" Margin="16" VerticalAlignment="Top" HorizontalAlignment="Right"
                         Command="{Binding SetMaximumBuyableVolumeCommand}"/>
+
+                <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                    <Button Content="-" Width="32"
+                            Grid.Row="0" Margin="8" 
+                            Command="{Binding ReduceBuyableVolumeCommand}"/>
+                    <Slider Value="{Binding BuyableVolume}" Maximum="{Binding MaximumBuyableVolume}"
+                            Minimum="0"
+                            Grid.Row="0" 
+                            VerticalAlignment="Center" Margin="4" Width="168"/>
+                    <Button Content="+" Width="32"
+                            Grid.Row="0" Margin="8"
+                            Command="{Binding IncreaseBuyableVolumeCommand}"/>
+                </StackPanel>
 
                 <StackPanel Grid.Row="1" Orientation="Horizontal"
                             VerticalAlignment="Top" HorizontalAlignment="Left" Margin="16">

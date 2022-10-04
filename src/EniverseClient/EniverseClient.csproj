@@ -5,6 +5,12 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <Platforms>AnyCPU;x64</Platforms>
+    <Version>1.0.1</Version>
+    <PackageId>Eniverse Merchant</PackageId>
+    <NeutralLanguage />
+    <Authors>echigor</Authors>
+    <Product>Eniverse Merchant</Product>
+    <Description>A program that allows you to trade goods between the systems of the Eniverse galaxy.</Description>
   </PropertyGroup>
 
   <ItemGroup>

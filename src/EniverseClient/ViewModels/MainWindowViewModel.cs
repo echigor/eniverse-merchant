@@ -10,8 +10,6 @@ using System.Windows.Threading;
 using Eniverse.ClientModel;
 using Eniverse.Services;
 
-using Eniverse.ViewModels;
-
 using Prism.Commands;
 using Prism.Mvvm;
 
@@ -67,14 +65,20 @@ namespace Eniverse.ViewModels
         public ProductViewModel SelectedProductInMarket
         {
             get { return _selectedProductInMarket; }
-            set { SetProperty(ref _selectedProductInMarket, value, HandleSelectedProductInMarketChanged); }
+            set 
+            { 
+                SetProperty(ref _selectedProductInMarket, value, HandleSelectedProductInMarketChanged);
+            }
         }
 
         private ProductViewModel _selectedProductInCargoHold;
         public ProductViewModel SelectedProductInCargoHold
         {
             get { return _selectedProductInCargoHold; }
-            set { SetProperty(ref _selectedProductInCargoHold, value, HandleSelectedProductInCargoHoldChanged); }
+            set 
+            { 
+                SetProperty(ref _selectedProductInCargoHold, value, HandleSelectedProductInCargoHoldChanged);
+            }
         }
 
         private string _starSystemFilter;
@@ -116,28 +120,40 @@ namespace Eniverse.ViewModels
         public short BuyableVolume
         {
             get { return _buyableVolume; }
-            set { SetProperty(ref _buyableVolume, value, UpdateTotalBuyPrice); }
+            set 
+            { 
+                SetProperty(ref _buyableVolume, value, UpdateTotalBuyPrice);
+            }
         }
 
         private short _sellableVolume;
         public short SellableVolume
         {
             get { return _sellableVolume; }
-            set { SetProperty(ref _sellableVolume, value, UpdateTotalSellPrice); }
+            set 
+            { 
+                SetProperty(ref _sellableVolume, value, UpdateTotalSellPrice);
+            }
         }
 
         private short _maximumSellableVolume;
         public short MaximumSellableVolume
         {
             get { return _maximumSellableVolume; }
-            set { SetProperty(ref _maximumSellableVolume, value); }
+            set 
+            {
+                SetProperty(ref _maximumSellableVolume, value);
+            }
         }
 
         private short _maximumBuyableVolume;
         public short MaximumBuyableVolume
         {
             get { return _maximumBuyableVolume; }
-            set { SetProperty(ref _maximumBuyableVolume, value); }
+            set 
+            {
+                SetProperty(ref _maximumBuyableVolume, value);
+            }
         }
 
         private decimal _totalBuyPrice;
@@ -170,6 +186,30 @@ namespace Eniverse.ViewModels
         public DelegateCommand SetMaximumSellableVolumeCommand
         {
             get { return _setMaximumSellableVolumeCommand; }
+        }
+
+        private DelegateCommand _reduceSellableVolumeCommand;
+        public DelegateCommand ReduceSellableVolumeCommand
+        {
+            get { return _reduceSellableVolumeCommand; }
+        }
+
+        private DelegateCommand _increaseSellableVolumeCommand;
+        public DelegateCommand IncreaseSellableVolumeCommand
+        {
+            get { return _increaseSellableVolumeCommand; }
+        }
+
+        private DelegateCommand _reduceBuyableVolumeCommand;
+        public DelegateCommand ReduceBuyableVolumeCommand
+        {
+            get { return _reduceBuyableVolumeCommand; }
+        }
+
+        private DelegateCommand _increaseBuyableVolumeCommand;
+        public DelegateCommand IncreaseBuyableVolumeCommand
+        {
+            get { return _increaseBuyableVolumeCommand; }
         }
 
         private DelegateCommand _applyFilterCommand;
@@ -208,20 +248,24 @@ namespace Eniverse.ViewModels
                     .ObservesProperty(() => TravelCost)
                     .ObservesProperty(() => Merchant.Credits);
 
-            _setMaximumSellableVolumeCommand = new DelegateCommand(() => SellableVolume = _maximumSellableVolume);
-            _setMaximumBuyableVolumeCommand = new DelegateCommand(() => BuyableVolume = _maximumBuyableVolume);
+            _reduceSellableVolumeCommand = new DelegateCommand(() => SellableVolume--, () => SellableVolume > 0).ObservesProperty(() => SellableVolume);
+            _increaseSellableVolumeCommand = new DelegateCommand(() => SellableVolume++, () => SellableVolume < _maximumSellableVolume)
+                .ObservesProperty(() => SellableVolume)
+                .ObservesProperty(() => MaximumSellableVolume);
+            _setMaximumSellableVolumeCommand = new DelegateCommand(() => SellableVolume = MaximumSellableVolume);
 
-            _buyProductsCommand = new DelegateCommand(async () => await BuyProductsAsync());
-                                                                                                 //() => _merchant?.CurrentStation.ID != _observableStation?.ID
-                                                                                                 //&& _selectedProductInMarket != null
-                                                                                                 //&& _merchant?.Credits < _totalBuyPrice
-                                                                                                 //&& _maximumBuyableVolume < _buyableVolume
-                                                                                                 //&& _selectedProductInMarket.Volume < _buyableVolume
-            _sellProductsCommand = new DelegateCommand(async () => await SellProductsAsync());
-                                                                                                    //() => _merchant?.CurrentStation.ID != _observableStation?.ID
-                                                                                                    //&& _selectedProductInCargoHold != null
-                                                                                                    //&& _maximumSellableVolume < _sellableVolume
-                                                                                                    //&& _selectedProductInCargoHold.Volume < _sellableVolume
+            _reduceBuyableVolumeCommand = new DelegateCommand(() => BuyableVolume--, () => BuyableVolume > 0).ObservesProperty(() => BuyableVolume);
+            _increaseBuyableVolumeCommand = new DelegateCommand(() => BuyableVolume++, () => BuyableVolume < _maximumBuyableVolume)
+                .ObservesProperty(() => BuyableVolume)
+                .ObservesProperty(() => MaximumBuyableVolume);
+            _setMaximumBuyableVolumeCommand = new DelegateCommand(() => BuyableVolume = MaximumBuyableVolume);
+
+            _buyProductsCommand = new DelegateCommand(async () => await BuyProductsAsync(), CheckCanBuyProduct)
+                .ObservesProperty(() => BuyableVolume)
+                .ObservesProperty(() => SelectedProductInMarket);
+            _sellProductsCommand = new DelegateCommand(async () => await SellProductsAsync(), CheckCanSellProduct)
+                .ObservesProperty(() => SellableVolume)
+                .ObservesProperty(() => SelectedProductInCargoHold);
 
             Initialize();
         }
@@ -389,9 +433,15 @@ namespace Eniverse.ViewModels
             //Необходимо реализовать повторное выделение товара в списке
             if (_observableStation != null && _selectedProductInMarket != null)
             {
+                int buyableVolumeByCredits = (int)(_merchant.Credits / _selectedProductInMarket.Price);
+
                 if (_selectedProductInMarket.Volume <= _merchant.AvailableCargoHoldVolume)
                 {
                     MaximumBuyableVolume = _selectedProductInMarket.Volume;
+                }
+                else if(_merchant.AvailableCargoHoldVolume >= buyableVolumeByCredits)
+                {
+                    MaximumBuyableVolume = (short)buyableVolumeByCredits;
                 }
                 else
                 {
@@ -427,6 +477,30 @@ namespace Eniverse.ViewModels
         {
             UpdateSameProduct();
             UpdateTotalSellPrice();
+            SellProductsCommand.RaiseCanExecuteChanged();
+        }
+
+        private bool CheckCanBuyProduct()
+        {
+            bool canBuyProduct = _merchant?.CurrentStation.ID == _observableStation?.ID
+                                  && _selectedProductInMarket != null
+                                  && _merchant.Credits >= _totalBuyPrice
+                                  && _buyableVolume > 0
+                                  && _maximumBuyableVolume >= _buyableVolume
+                                  && _selectedProductInMarket.Volume >= _buyableVolume;
+
+            return canBuyProduct;
+        }
+
+        private bool CheckCanSellProduct()
+        {
+            bool canSellProduct = _merchant?.CurrentStation.ID == _observableStation?.ID
+                                   && _selectedProductInCargoHold != null
+                                   && _sellableVolume > 0
+                                   && _maximumSellableVolume >= _sellableVolume
+                                   && _selectedProductInCargoHold.Volume >= _sellableVolume;
+
+            return canSellProduct;
         }
     }
 }

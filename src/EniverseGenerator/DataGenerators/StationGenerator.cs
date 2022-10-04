@@ -10,8 +10,8 @@ namespace Eniverse.DataGenerators
 {
     public class StationGenerator
     {
-        //public const int TotalStations = 783_541;
-        public const int TotalStations = 7_835;
+        public const int TotalStations = 783_541;
+        //public const int TotalStations = 7_835;
 
         private Random _random;
         private int _stationCounter;
